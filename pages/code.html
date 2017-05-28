@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Untitled Document</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+  <header></header>
+  <main class="reg">
+    <form action="registrate.php">
+      
+      <label for="reg__tel" class="reg__telLabel">Введите код из СМС</label>
+      <p class="reg__where">
+        Авторизационный код был отправлен SMS&#8209;сообщением на&nbsp;номер <strong class="js-phoneNumber">{{{phoneNumber}}}</strong>
+      </p>
+      <input type="tel" class="reg__tel js-showErrorBorder" id="reg__tel">
+      
+      <p class="reg__error reg__error_oneString js-showError">Неправильно введен код</p>
+      
+      <hr>
+      
+      <a href="../index.html" class="reg__return">Указать другой номер телефона</a>
+      
+      <input type="submit" class="reg__submit" value="Авторизоваться">
+      
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Untitled Document</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <header></header>
+  <main class="reg">
+    <form action="reg.php">
+      
+      <label for="reg__tel" class="reg__telLabel">Введите номер телефона</label>
+      <input type="tel" class="reg__tel js-showErrorBorder" id="reg__tel">
+      
+      <p class="reg__error js-showError">Данный номер не&nbsp;может использоваться в&nbsp;системе. Пожалуйста введите другой номер</p>
+      
+      <hr>
+      
+      <input type="checkbox" class="reg__offer" id="reg__offer">
+      <label for="reg__offer" class="reg__offerLabel">Ознакомился с <a class="reg__offerLink" href="#">офертой</a> и&nbsp;принимаю её&nbsp;положения</label>
+      
+      <input type="submit" class="reg__submit" value="Продолжить">
+      
+    </form>
+  </main>
+</body>
+</html>

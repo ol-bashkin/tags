@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Untitled Document</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/services.js"></script>
+</head>
+
+<body>
+ 
+  <aside class="c-menu">
+    <div class="c-menu__overlay c-menu__overlay_hidden js-menuOverlay-toggle"></div>
+    <nav class="menu menu_hidden js-menu-toggle">
+      <ul class="menu__list menu__list_top">
+        <li class="menu__item">
+          <p href="#" class="menu__link menu__link_user js-user-toggle">
+            Александр Всехвальнов<br>
+            <span class="menu__tel">+7 905 378 12 45</span>
+          </p>
+        </li>
+      </ul>
+      <ul class="menu__list menu__list_user menu__list_user_hidden js-menuUser-toggle">
+        <li class="menu__item"><a href="#" class="menu__link menu__link_edit">Изменить данные</a></li>
+        <li class="menu__item"><a href="#" class="menu__link menu__link_exit">Выйти</a></li>
+      </ul>
+      <ul class="menu__list js-menuMain-toggle">
+        <li class="menu__item"><a href="#" class="menu__link menu__link_card">Моя карта</a></li>
+        <li class="menu__item"><a href="#" class="menu__link menu__link_bonus">Бонусный счет</a></li>
+        <li class="menu__item"><a href="#" class="menu__link menu__link_move">Перечислить бонусы</a></li>
+        <li class="menu__item"><a href="#" class="menu__link menu__link_partner">Пригласить партнера</a></li>
+        <li class="menu__item"><a href="#" class="menu__link menu__link_friend">Пригласить друга</a></li>
+      </ul>
+      <ul class="menu__list menu__list_bottom js-menuMain-toggle">
+        <li class="menu__item"><a href="" class="menu__link menu__link_help">Помощь</a></li>
+        <li class="menu__item"><a href="" class="menu__link menu__link_about">О проекте</a></li>
+      </ul>
+    </nav>
+  </aside>
+  
+  <div class="c-search">
+    <div class="search">
+      <div class="search__hamburger js-hamburger-toggle"></div>
+        <input type="text" class="search__text js-search-bar" placeholder="Поиск партнёров">
+    </div>
+    <div class="results results_is_hidden js-search-results"></div>
+    </div>
+  </div>
+  
+  
+  <main class="map" id="map">
+    
+  </main>
+  
+  <script src="../assets/js/markerclusterer.js"></script>
+  
+  <script src="../assets/js/map.js"></script>
+  
+  <script src="../assets/js/main.js"></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVVH_sNL6bjByqSGCJogNH65U_CVDkSiI&callback=initMap">
+  </script>
+  <div class="svgFilter">
+    <svg width="0" height="0" viewBox="0 0 0 0" preserveAspectRatio="none"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+      <filter id="colorMeMatrix">
+        <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 .01
+                                                                0 1 0 0 .03
+                                                                0 0 1 0 .05
+                                                                0 0 0 1 0" />
+      </filter>
+    </svg>
+  </div>
+  
+</body>
+</html>

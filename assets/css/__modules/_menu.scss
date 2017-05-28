@@ -1,0 +1,246 @@
+/* Menu */
+
+.c-menu {
+  position: absolute;
+  z-index: 1000010;
+  height: 100%;
+  background: none;
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 0.5s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &_hidden {
+      transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
+
+.menu {
+  position: absolute;
+  z-index: 1000011;
+  box-sizing: border-box;
+  height: 100%;
+  width: 275px;
+  background: #ffffff;
+  padding-left: 22px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  transition: left 0.5s ease-in-out;
+  left: 0;
+
+  &_hidden {
+    transition: left 0.5s ease-in-out;
+    left: -275px;
+  }
+
+  &__list {
+    padding: 16px 0;
+    margin: 0;
+    
+    border-bottom: 1px solid #e5e5e5;
+    transition: visibility 0s linear 0s, opacity 0.3s ease-in-out;
+    visibility: visible;
+    opacity: 1;
+
+    &_top {
+      background-color: #fff;
+      
+    }
+
+    &_bottom {
+      border: none;
+      padding-bottom: 0;
+    }
+    
+    &_hidden {
+      transition: visibility 0s linear 0.3s, opacity 0.3s ease-in-out;
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    &_user {
+      border: none;
+      position: relative;
+      transition: visibility 0s linear 0s, margin-top 0.3s ease-in-out;
+      margin-top: 0;
+      z-index: -1;
+      
+      &_hidden {
+        transition: visibility 0s linear 0.3s, margin-top 0.3s ease-in-out;
+        margin-top: -120px;
+        
+        visibility: hidden;
+        }
+      
+    }
+  }
+
+  &__item {
+    display: block;
+    list-style-type: none;
+    padding: 5px 0;
+    transition: background-color 0.5s ease-in-out;
+
+    &:hover {
+      background-color: #eef1f3;
+    }
+  }
+
+  &__link {
+    position: relative;
+    display: block;
+
+    @include roboto(11px, 400, 34px);
+
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #000000;
+    padding-left: 45px;
+
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      margin-left: -45px;
+      background-image: url("../img/__menu_icons/menu_icons.svg");
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      background-size: 34px 340px;
+    }
+
+    &_card {
+      &:before {
+        background-position: 0 -34px;
+      }
+    }
+
+    &_bonus {
+      &:before {
+        background-position: 0 -68px;
+      }
+    }
+
+    &_move {
+      &:before {
+        background-position: 0 -102px;
+      }
+    }
+
+    &_partner {
+      &:before {
+        background-position: 0 -136px;
+      }
+    }
+
+    &_friend {
+      &:before {
+        background-position: 0 -170px;
+      }
+    }
+
+    &_help {
+      color: $primary-color;
+      text-transform: none;
+
+      &:before {
+        background-position: 0 -204px;
+      }
+    }
+
+    &_about {
+      color: $primary-color;
+      text-transform: none;
+
+      &:before {
+        background-position: 0 -238px;
+      }
+    }
+    
+    &_exit {
+      &:before {
+        background-position: 0 -272px;
+      }
+    }
+    &_edit {
+      &:before {
+        background-position: 0 -306px;
+      }
+    }
+    
+    &_user {
+      text-transform: none;
+      font-size: 14px;
+      line-height: 18px;
+      cursor: pointer;
+      
+      &:after {
+        content: " ";
+        position: absolute;
+        display: block;
+        left: 100%;
+        margin-left: -22px;
+        margin-top: -29px;
+        animation-duration: 300ms;
+        animation-timing-function: steps(9);
+        width: 7px;
+        height: 5px;
+        background-repeat: no-repeat;
+        background-image: url('../img/__menu_icons/arrow.svg');
+        background-size: 70px 5px;
+      }
+      
+      &_collapsed {
+        &:after {
+          animation-name: arrow-collapse;
+          background-position: 0px 0px;
+        }
+      }
+      
+      &_expanded {
+        &:after {
+          animation-name: arrow-expand;
+          background-position: -63px 0px;
+        }
+      }
+    }
+  }
+
+  &__tel {
+    font-size: 11px;
+    font-weight: 300;
+  }
+}
+
+@keyframes arrow-expand {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -63px 0px;
+  }
+}
+
+@keyframes arrow-collapse {
+  0% {
+    background-position: -63px 0px;
+  }
+  100% {
+    background-position: 0px 0px;
+  }
+}
