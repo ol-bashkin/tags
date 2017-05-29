@@ -232,8 +232,8 @@ function initMap() {
           markerHolder.setOptions({
             icon: {
               url: icons[markerHolder.properties.type].icon,
-              size: new google.maps.Size(30, 50),
-              scaledSize: new google.maps.Size(30, 50)
+              size: new google.maps.Size(30, 55),
+              scaledSize: new google.maps.Size(30, 55)
             },
             clickable: true
           });
@@ -242,8 +242,8 @@ function initMap() {
         result.setOptions({
           icon: {
             url: icons[result.properties.type + '_sel'].icon,
-            size: new google.maps.Size(30, 50),
-            scaledSize: new google.maps.Size(30, 50)
+            size: new google.maps.Size(30, 55),
+            scaledSize: new google.maps.Size(30, 55)
           },
           clickable: false
         });
@@ -309,8 +309,8 @@ function initMap() {
         markerHolder.setOptions({
           icon: {
             url: icons[markerHolder.properties.type].icon,
-            size: new google.maps.Size(30, 50),
-            scaledSize: new google.maps.Size(30, 50)
+            size: new google.maps.Size(30, 55),
+            scaledSize: new google.maps.Size(30, 55)
           },
           clickable: true
         });
@@ -319,8 +319,8 @@ function initMap() {
       marker.setOptions({
         icon: {
           url: icons[marker.properties.type + '_sel'].icon,
-          size: new google.maps.Size(30, 50),
-          scaledSize: new google.maps.Size(30, 50)
+          size: new google.maps.Size(30, 55),
+          scaledSize: new google.maps.Size(30, 55)
         },
         clickable: false
       });
@@ -340,8 +340,8 @@ function initMap() {
     markerHolder.setOptions({
       icon: {
         url: icons[markerHolder.properties.type].icon,
-        size: new google.maps.Size(30, 50),
-        scaledSize: new google.maps.Size(30, 50) 
+        size: new google.maps.Size(30, 55),
+        scaledSize: new google.maps.Size(30, 55) 
       },
       clickable: true
     });
