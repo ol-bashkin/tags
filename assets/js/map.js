@@ -112,10 +112,11 @@ function initMap() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
+      currentPositionMarker.setPosition(currentPosition);
     }, function () {
       handleLocationError(true, infoWindow, map.getCenter());
     }, {
-      enableHighAccuracy: false,
+      enableHighAccuracy: true,
       timeout: 30000,
       maximumAge: 0
     });
@@ -341,7 +342,7 @@ function initMap() {
       icon: {
         url: icons[markerHolder.properties.type].icon,
         size: new google.maps.Size(30, 55),
-        scaledSize: new google.maps.Size(30, 55) 
+        scaledSize: new google.maps.Size(30, 55)
       },
       clickable: true
     });
