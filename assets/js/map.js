@@ -50,6 +50,10 @@ function initMap() {
         coords = center.geometry.coordinates,
         latLng = new google.maps.LatLng(coords[1], coords[0]);
       
+      //markers.forEach(function (marker) {
+        
+      //});
+      
       return new google.maps.Marker({
 
         position: latLng,
@@ -78,7 +82,7 @@ function initMap() {
     trafficViewDiv = document.createElement('div'),
     trafficView = new TrafficView(trafficViewDiv, map),
     isInfo = false,
-    markerCluster = new MarkerClusterer(map, markers, {imagePath: '../assets/img/clusters/'}),
+    markerCluster = new MarkerClusterer(map, markers, {imagePath: '../assets/img/clusters/', maxZoom: 12}),
     markerHolder = '',
     searchBar = document.getElementsByClassName('js-search-bar')[0],
     currentPosition = false,
@@ -229,8 +233,7 @@ function initMap() {
             icon: {
               url: icons[markerHolder.properties.type].icon
             },
-            clickable: true,
-            cursor: 'pointer'
+            clickable: true
           });
         }
 
@@ -238,8 +241,7 @@ function initMap() {
           icon: {
             url: icons[result.properties.type + '_sel'].icon
           },
-          clickable: false,
-          cursor: 'default'
+          clickable: false
         });
 
         map.panTo(markerPosition);
@@ -304,8 +306,7 @@ function initMap() {
           icon: {
             url: icons[markerHolder.properties.type].icon
           },
-          clickable: true,
-          cursor: 'pointer'
+          clickable: true
         });
       }
       
@@ -313,8 +314,7 @@ function initMap() {
         icon: {
           url: icons[marker.properties.type + '_sel'].icon
         },
-        clickable: false,
-        cursor: 'default'
+        clickable: false
       });
 
       map.panTo(markerPosition);
@@ -329,12 +329,11 @@ function initMap() {
   });
   
   infoWindow.addListener('closeclick', function (event) {
-    markerHolder.setIcon({
-      url: icons[markerHolder.properties.type].icon,
-      size: new google.maps.Size(15, 15),
-      scaledSize: new google.maps.Size(15, 15),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(7.5, 7.5)
+    markerHolder.setOptions({
+      icon: {
+        url: icons[markerHolder.properties.type].icon 
+      },
+      clickable: true
     });
   });
   
