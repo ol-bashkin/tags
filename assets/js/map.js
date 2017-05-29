@@ -78,7 +78,8 @@ function initMap() {
     markerCluster = new MarkerClusterer(map, markers, {imagePath: '../assets/img/clusters/'}),
     markerHolder = '',
     searchBar = document.getElementsByClassName('js-search-bar')[0],
-    currentPosition = new google.maps.Marker({
+    currentPosition = false,
+    currentPositionMarker = new google.maps.Marker({
       icon: {
         url: '../assets/img/__map_icons/currentposition.svg',
         size: new google.maps.Size(30, 50),
@@ -97,7 +98,25 @@ function initMap() {
                           'Error: The Geolocation service failed.' :
                           'Error: Your browser doesn\'t support geolocation.');
   }
-
+  
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(function (position) {
+      currentPosition = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+    }, function () {
+      handleLocationError(true, infoWindow, map.getCenter());
+    }, {
+      enableHighAccuracy: false,
+      timeout: 30000,
+      maximumAge: 0
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+  
   function CenterControl(controlDiv, map) {
     var controlUI = document.createElement('div');
     controlUI.classList.add('map__control');
@@ -107,29 +126,14 @@ function initMap() {
     controlDiv.appendChild(controlUI);
 
     controlUI.addEventListener('click', function () {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-          
-          currentPosition.setOptions({
-            visible: true,
-            position: pos
-          });
-          
-          controlUI.classList.add('map__control_locate_is_active');
-
-          map.panTo(pos);
-          //map.setZoom(14);
-
-        }, function () {
-          handleLocationError(true, infoWindow, map.getCenter());
-        });
-      } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
+      if (currentPosition && !(controlUI.classList.contains('map__control_locate_is_active'))) {
+        currentPositionMarker.setPosition(currentPosition);
+        currentPositionMarker.setVisible(true);
+        controlUI.classList.add('map__control_locate_is_active');
+        map.panTo(currentPositionMarker.getPosition());
+      } else if (controlUI.classList.contains('map__control_locate_is_active')) {
+        currentPositionMarker.setVisible(false);
+        controlUI.classList.remove('map__control_locate_is_active');
       }
     });
 
@@ -145,7 +149,6 @@ function initMap() {
     controlUI.title = 'Нажмите для определения собственного местоположения';
     controlDiv.appendChild(controlUI);
     controlUI.addEventListener('click', function () {
-
       if (isMap) {
         trafficLayer.setMap(map);
         isMap = false;
