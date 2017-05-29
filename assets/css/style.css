@@ -8,7 +8,8 @@
 html, body {
   position: absolute;
   height: 100%;
-  width: 100%; }
+  width: 100%;
+  overflow: hidden; }
 
 header {
   height: 25%;
@@ -89,7 +90,8 @@ header {
   padding-left: 22px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   transition: left 0.5s ease-in-out;
-  left: 0; }
+  left: 0;
+  overflow: scroll; }
   .menu_hidden {
     transition: left 0.5s ease-in-out;
     left: -275px; }
@@ -123,8 +125,8 @@ header {
     display: block;
     list-style-type: none;
     padding: 5px 0;
-    transition: background-color 0.5s ease-in-out; }
-    .menu__item:hover {
+    transition: background-color 0.2s ease-in-out; }
+    .menu__item:active {
       background-color: #eef1f3; }
   .menu__link {
     position: relative;
@@ -426,12 +428,13 @@ header {
   transition: all 0.2s ease-in-out; }
   .results__item {
     padding: 15px 15px;
-    cursor: pointer; }
-    .results__item:hover {
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out; }
+    .results__item:active {
       background-color: #eef1f3; }
     .results__item_is_passive {
       cursor: default; }
-      .results__item_is_passive:hover {
+      .results__item_is_passive:active {
         background-color: transparent; }
     .results__item:after {
       content: '';

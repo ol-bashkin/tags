@@ -57,10 +57,13 @@ function initMap() {
 
         icon: {
           url: icons[properties.type].icon,
-          size: new google.maps.Size(15, 15),
-          scaledSize: new google.maps.Size(15, 15),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(7.5, 7.5)
+          size: new google.maps.Size(30, 55),
+          scaledSize: new google.maps.Size(30, 55),
+          anchor: new google.maps.Point(15, 47.2)
+        },
+        shape: {
+          coords: [15, 47.2, 15],
+          type: 'circle'
         },
         optimized: false,
         map: map
@@ -222,21 +225,21 @@ function initMap() {
         searchBar.value = ''; //result.properties.name;
 
         if (!!(markerHolder)) {
-          markerHolder.setIcon({
-            url: icons[markerHolder.properties.type].icon,
-            size: new google.maps.Size(15, 15),
-            scaledSize: new google.maps.Size(15, 15),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(7.5, 7.5)
+          markerHolder.setOptions({
+            icon: {
+              url: icons[markerHolder.properties.type].icon
+            },
+            clickable: true,
+            cursor: 'pointer'
           });
         }
 
-        result.setIcon({
-          url: icons[result.properties.type + '_sel'].icon,
-          size: new google.maps.Size(30, 49.5),
-          scaledSize: new google.maps.Size(30, 49.5),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(15, 47.2)
+        result.setOptions({
+          icon: {
+            url: icons[result.properties.type + '_sel'].icon
+          },
+          clickable: false,
+          cursor: 'default'
         });
 
         map.panTo(markerPosition);
@@ -297,25 +300,24 @@ function initMap() {
       var markerPosition = marker.getPosition();
       
       if (!!(markerHolder)) {
-        markerHolder.setIcon({
-          url: icons[markerHolder.properties.type].icon,
-          size: new google.maps.Size(15, 15),
-          scaledSize: new google.maps.Size(15, 15),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(7.5, 7.5)
+        markerHolder.setOptions({
+          icon: {
+            url: icons[markerHolder.properties.type].icon
+          },
+          clickable: true,
+          cursor: 'pointer'
         });
       }
       
-      marker.setIcon({
-        url: icons[marker.properties.type + '_sel'].icon,
-        size: new google.maps.Size(30, 49.5),
-        scaledSize: new google.maps.Size(30, 49.5),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(15, 47.2)
+      marker.setOptions({
+        icon: {
+          url: icons[marker.properties.type + '_sel'].icon
+        },
+        clickable: false,
+        cursor: 'default'
       });
 
       map.panTo(markerPosition);
-      //map.setZoom(16);
       map.panBy(0, -96);
 
       infoWindow.setContent(contenter(marker));

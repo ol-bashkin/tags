@@ -41,6 +41,8 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   transition: left 0.5s ease-in-out;
   left: 0;
+  overflow: scroll;
+
 
   &_hidden {
     transition: left 0.5s ease-in-out;
@@ -93,9 +95,9 @@
     display: block;
     list-style-type: none;
     padding: 5px 0;
-    transition: background-color 0.5s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 
-    &:hover {
+    &:active {
       background-color: #eef1f3;
     }
   }

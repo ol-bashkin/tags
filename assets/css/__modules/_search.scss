@@ -81,14 +81,15 @@
   &__item {
     padding: 15px 15px;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
     
-    &:hover {
+    &:active {
       background-color: #eef1f3;
     }
     
     &_is_passive {
       cursor: default;
-      &:hover {
+      &:active {
         background-color: transparent;
       }
     }
