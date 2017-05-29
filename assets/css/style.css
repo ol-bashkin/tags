@@ -72,7 +72,8 @@ header {
     background-color: rgba(0, 0, 0, 0.3);
     visibility: visible;
     opacity: 1;
-    transition: visibility 0s linear 0s, opacity 0.5s ease-in-out; }
+    transition: visibility 0s linear 0s, opacity 0.5s ease-in-out;
+    -webkit-tap-highlight-color: transparent; }
     .c-menu__overlay:hover {
       cursor: pointer; }
     .c-menu__overlay_hidden {
@@ -125,7 +126,8 @@ header {
     display: block;
     list-style-type: none;
     padding: 5px 0;
-    transition: background-color 0.2s ease-in-out; }
+    transition: background-color 0.2s ease-in-out;
+    -webkit-tap-highlight-color: transparent; }
     .menu__item:active {
       background-color: #eef1f3; }
   .menu__link {
