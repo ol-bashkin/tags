@@ -350,7 +350,7 @@ function initMap() {
     });
     
 
-    if (query.length >= 3) {
+    if (query.length >= 2) {
       markers.forEach(function (marker, i) {
         var regQuery = new RegExp(query, 'i'),
           mazdaName = marker.properties.name,
