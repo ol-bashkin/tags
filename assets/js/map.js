@@ -97,7 +97,8 @@ function initMap() {
       visible: false,
       optimized: false,
       map: map
-    });
+    }),
+    serviceDistance = new google.maps.DistanceMatrixService();
   
   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
@@ -169,6 +170,8 @@ function initMap() {
 
     });
   }
+  
+  
 
   //контент информационноо окна
   //'  <div class="infowindow__distance">' + distance                   + '</div>' +
@@ -186,107 +189,77 @@ function initMap() {
     );
   }
   
-  function resulter(result, position, query, map) {
+  function resulter(marker, matchStart, query, map) {
     var resultsItem = document.createElement('div'),
-      resultsName = document.createElement('div'),
-      resultsNameTextBegin = document.createTextNode(''),
-      resultsNameTextEnd = document.createTextNode(''),
-      resultsCategory = document.createElement('div'),
-      resultsCategoryText = document.createTextNode('result.properties.category'),
-      querySpan = document.createElement('span'),
-      querySpanText = document.createTextNode(''),
-      searchResults = document.getElementsByClassName('results')[0];
+      resultName = !!(marker) ? '<p class="results__name">' + marker.properties.name.substr(0, matchStart) + '<span class="results__name_query">' + marker.properties.name.substr(matchStart, query.length) + '</span>' + marker.properties.name.substr(matchStart + query.length) + '</p>' : '<p class="results__name">Нет результатов поиска</p>',
+      resultCategory = !!(marker) ? '<p class="results__category>' + marker.properties.category + '</p>' : '',
+      resultDistance = '';
+    
     resultsItem.classList.add('results__item');
-    resultsName.classList.add('results__name');
-    if (result) {
-      resultsNameTextBegin.textContent = result.properties.name.substr(0, position);
-      resultsName.appendChild(resultsNameTextBegin);
-
-      querySpanText.textContent = result.properties.name.substr(position, query.length);
-      querySpan.appendChild(querySpanText);
-      querySpan.classList.add('results__name_query');
-      resultsName.appendChild(querySpan);
-
-      resultsNameTextEnd.textContent = result.properties.name.substr(position + query.length);
-      resultsName.appendChild(resultsNameTextEnd);
-
-      resultsCategoryText.textContent = result.properties.category;
-
-      resultsCategory.classList.add('results__category');
-      resultsCategory.appendChild(resultsCategoryText);
-      resultsItem.appendChild(resultsName);
-      resultsItem.appendChild(resultsCategory);
-
-      resultsItem.addEventListener('click', function (event) {
-        var resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
-          searchBar = document.getElementsByClassName('js-search-bar')[0],
-          markerPosition = result.getPosition();
+    
+    if (!!(currentPosition) && !!(marker)) {
+      serviceDistance.getDistanceMatrix({
+        origins: [currentPosition],
+        destinations: [marker.getPosition()],
+        travelMode: 'DRIVING',
+        unitSystem: google.maps.UnitSystem.METRIC,
+        avoidHighways: false,
+        avoidTolls: false
+      }, function () {
         
-        if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
-
-        resultsArray.forEach(function (item) {
-          item.parentNode.removeChild(item);
-        });
-        searchBar.value = ''; //result.properties.name;
-
-        if (!!(markerHolder)) {
-          markerHolder.setOptions({
-            icon: {
-              url: icons[markerHolder.properties.type].icon,
-              size: new google.maps.Size(30, 55),
-              scaledSize: new google.maps.Size(30, 55)
-            },
-            clickable: true
-          });
-        }
-
-        result.setOptions({
+      });
+    }
+    
+    
+    if (!(marker)) {resultsItem.classList.add('results__item_is_passive'); }
+    resultsItem.innerHTML = resultName + resultCategory;
+    
+    function resultClick() {
+      var resultsContainer = document.getElementsByClassName('js-search-results')[0],
+        resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
+        searchBar = document.getElementsByClassName('js-search-bar')[0],
+        markerPosition = marker.getPosition();
+      
+      if (!(resultsContainer.classList.contains('results_is_hidden'))) { resultsContainer.classList.add('results_is_hidden'); }
+      
+      resultsArray.forEach(function (item) {
+        item.parentNode.removeChild(item);
+      });
+      
+      if (!!(markerHolder)) {
+        markerHolder.setOptions({
           icon: {
-            url: icons[result.properties.type + '_sel'].icon,
+            url: icons[markerHolder.properties.type].icon,
             size: new google.maps.Size(30, 55),
             scaledSize: new google.maps.Size(30, 55)
           },
-          clickable: false
+          clickable: true
         });
+      }
 
-        map.panTo(markerPosition);
-        map.setZoom(14);
-        map.panBy(0, -96);
-
-        infoWindow.setContent(contenter(result));
-        infoWindow.open(map, result);
-
-        markerHolder = result;
+      marker.setOptions({
+        icon: {
+          url: icons[marker.properties.type + '_sel'].icon,
+          size: new google.maps.Size(30, 55),
+          scaledSize: new google.maps.Size(30, 55)
+        },
+        clickable: false
       });
 
-      return resultsItem;
-    } else {
-      
-      resultsNameTextBegin.textContent = 'Нет результатов поиска';
-      resultsName.appendChild(resultsNameTextBegin);
-      resultsItem.appendChild(resultsName);
-      if (!(resultsItem.classList.contains('results__item_is_passive'))) { resultsItem.classList.add('results__item_is_passive'); }
-      return resultsItem;
+      map.panTo(markerPosition);
+      map.setZoom(14);
+      map.panBy(0, -96);
+
+      infoWindow.setContent(contenter(marker));
+      infoWindow.open(map, marker);
+
+      markerHolder = marker;
     }
+    
+    if (!!(marker)) {resultsItem.addEventListener('click', resultClick); }
+    
+    return resultsItem;
 
-  }
-
-  function getChar(event) {
-    if (event.which === null) { // IE
-      if (event.keyCode < 32) {
-        return null; // спец. символ
-      }
-      return String.fromCharCode(event.keyCode);
-    }
-
-    if (event.which !== 0 && event.charCode !== 0) { // все кроме IE
-      if (event.which < 32) {
-        return null; // спец. символ;
-      }
-      return String.fromCharCode(event.which); // остальные
-    }
-
-    return null; // спец. символ
   }
   
   centerControlDiv.index = 1;
@@ -366,23 +339,11 @@ function initMap() {
 
   });
   
-  google.maps.event.addDomListener(searchBar, 'keydown', function (event) {
-    var resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
-      searchResults = document.getElementsByClassName('results')[0];
-    if (event.keyCode === 8 && searchBar.value.length <= 3) {
-      if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
-      resultsArray.forEach(function (item) {
-        item.parentNode.removeChild(item);
-      });
-      
-    }
-  });
-  
-  google.maps.event.addDomListener(searchBar, 'keypress', function (event) {
+  google.maps.event.addDomListener(searchBar, 'input', function (event) {
     var searchResults = document.getElementsByClassName('js-search-results')[0],
       resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
-      char = getChar(event),
-      query = searchBar.value + char;
+      query = searchBar.value;
+    
     if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
     resultsArray.forEach(function (item) {
       item.parentNode.removeChild(item);
