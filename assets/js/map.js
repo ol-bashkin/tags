@@ -57,10 +57,13 @@ function initMap() {
 
         icon: {
           url: icons[properties.type].icon,
-          size: new google.maps.Size(15, 15),
-          scaledSize: new google.maps.Size(15, 15),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(7.5, 7.5)
+          size: new google.maps.Size(30, 55),
+          scaledSize: new google.maps.Size(30, 55),
+          anchor: new google.maps.Point(15, 47.2)
+        },
+        shape: {
+          coords: [15, 47.2, 15],
+          type: 'circle'
         },
         optimized: false,
         map: map
@@ -75,10 +78,11 @@ function initMap() {
     trafficViewDiv = document.createElement('div'),
     trafficView = new TrafficView(trafficViewDiv, map),
     isInfo = false,
-    markerCluster = new MarkerClusterer(map, markers, {imagePath: '../assets/img/clusters/'}),
+    markerCluster = new MarkerClusterer(map, markers, {imagePath: '../assets/img/clusters/', maxZoom: 12}),
     markerHolder = '',
     searchBar = document.getElementsByClassName('js-search-bar')[0],
-    currentPosition = new google.maps.Marker({
+    currentPosition = false,
+    currentPositionMarker = new google.maps.Marker({
       icon: {
         url: '../assets/img/__map_icons/currentposition.svg',
         size: new google.maps.Size(30, 50),
@@ -89,7 +93,8 @@ function initMap() {
       visible: false,
       optimized: false,
       map: map
-    });
+    }),
+    serviceDistance = new google.maps.DistanceMatrixService();
   
   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
@@ -97,7 +102,26 @@ function initMap() {
                           'Error: The Geolocation service failed.' :
                           'Error: Your browser doesn\'t support geolocation.');
   }
-
+  
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(function (position) {
+      currentPosition = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      currentPositionMarker.setPosition(currentPosition);
+    }, function () {
+      handleLocationError(true, infoWindow, map.getCenter());
+    }, {
+      enableHighAccuracy: true,
+      timeout: 30000,
+      maximumAge: 0
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+  
   function CenterControl(controlDiv, map) {
     var controlUI = document.createElement('div');
     controlUI.classList.add('map__control');
@@ -107,29 +131,14 @@ function initMap() {
     controlDiv.appendChild(controlUI);
 
     controlUI.addEventListener('click', function () {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-          
-          currentPosition.setOptions({
-            visible: true,
-            position: pos
-          });
-          
-          controlUI.classList.add('map__control_locate_is_active');
-
-          map.panTo(pos);
-          //map.setZoom(14);
-
-        }, function () {
-          handleLocationError(true, infoWindow, map.getCenter());
-        });
-      } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
+      if (currentPosition && !(controlUI.classList.contains('map__control_locate_is_active'))) {
+        currentPositionMarker.setPosition(currentPosition);
+        currentPositionMarker.setVisible(true);
+        controlUI.classList.add('map__control_locate_is_active');
+        map.panTo(currentPositionMarker.getPosition());
+      } else if (controlUI.classList.contains('map__control_locate_is_active')) {
+        currentPositionMarker.setVisible(false);
+        controlUI.classList.remove('map__control_locate_is_active');
       }
     });
 
@@ -145,7 +154,6 @@ function initMap() {
     controlUI.title = 'Нажмите для определения собственного местоположения';
     controlDiv.appendChild(controlUI);
     controlUI.addEventListener('click', function () {
-
       if (isMap) {
         trafficLayer.setMap(map);
         isMap = false;
@@ -158,6 +166,8 @@ function initMap() {
 
     });
   }
+  
+  
 
   //контент информационноо окна
   //'  <div class="infowindow__distance">' + distance                   + '</div>' +
@@ -175,105 +185,113 @@ function initMap() {
     );
   }
   
-  function resulter(result, position, query, map) {
+  function resulter(marker, matchStart, query, map, sendResult) {
     var resultsItem = document.createElement('div'),
-      resultsName = document.createElement('div'),
-      resultsNameTextBegin = document.createTextNode(''),
-      resultsNameTextEnd = document.createTextNode(''),
-      resultsCategory = document.createElement('div'),
-      resultsCategoryText = document.createTextNode('result.properties.category'),
-      querySpan = document.createElement('span'),
-      querySpanText = document.createTextNode(''),
-      searchResults = document.getElementsByClassName('results')[0];
+      resultText = '',
+      result = {};
+    
     resultsItem.classList.add('results__item');
-    resultsName.classList.add('results__name');
-    if (result) {
-      resultsNameTextBegin.textContent = result.properties.name.substr(0, position);
-      resultsName.appendChild(resultsNameTextBegin);
-
-      querySpanText.textContent = result.properties.name.substr(position, query.length);
-      querySpan.appendChild(querySpanText);
-      querySpan.classList.add('results__name_query');
-      resultsName.appendChild(querySpan);
-
-      resultsNameTextEnd.textContent = result.properties.name.substr(position + query.length);
-      resultsName.appendChild(resultsNameTextEnd);
-
-      resultsCategoryText.textContent = result.properties.category;
-
-      resultsCategory.classList.add('results__category');
-      resultsCategory.appendChild(resultsCategoryText);
-      resultsItem.appendChild(resultsName);
-      resultsItem.appendChild(resultsCategory);
-
-      resultsItem.addEventListener('click', function (event) {
-        var resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
-          searchBar = document.getElementsByClassName('js-search-bar')[0],
-          markerPosition = result.getPosition();
-        
-        if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
-
-        resultsArray.forEach(function (item) {
-          item.parentNode.removeChild(item);
-        });
-        searchBar.value = ''; //result.properties.name;
-
-        if (!!(markerHolder)) {
-          markerHolder.setIcon({
+    
+    if (!!(marker)) {
+      resultText =
+        '<div class="results__left"><p class="results__name">' +
+          marker.properties.name.substr(0, matchStart) +
+          '<span class="results__name_query">' +
+            marker.properties.name.substr(matchStart, query.length) +
+          '</span>' +
+          marker.properties.name.substr(matchStart + query.length) +
+        '</p>';
+      resultText += '<p class="results__category">' + marker.properties.category + '</p></div>';
+      
+    } else {
+      resultsItem.classList.add('results__item_is_passive');
+      resultsItem.innerHTML = '<p class="results__name">Нет результатов поиска</p>';
+      return { result: resultsItem, distance: ''};
+    }
+    
+    function resultClick() {
+      var resultsContainer = document.getElementsByClassName('js-search-results')[0],
+        resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
+        searchBar = document.getElementsByClassName('js-search-bar')[0],
+        markerPosition = marker.getPosition();
+      
+      if (!(resultsContainer.classList.contains('results_is_hidden'))) { resultsContainer.classList.add('results_is_hidden'); }
+      
+      resultsArray.forEach(function (item) {
+        item.parentNode.removeChild(item);
+      });
+      
+      if (!!(markerHolder)) {
+        markerHolder.setOptions({
+          icon: {
             url: icons[markerHolder.properties.type].icon,
-            size: new google.maps.Size(15, 15),
-            scaledSize: new google.maps.Size(15, 15),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(7.5, 7.5)
-          });
-        }
-
-        result.setIcon({
-          url: icons[result.properties.type + '_sel'].icon,
-          size: new google.maps.Size(30, 49.5),
-          scaledSize: new google.maps.Size(30, 49.5),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(15, 47.2)
+            size: new google.maps.Size(30, 55),
+            scaledSize: new google.maps.Size(30, 55)
+          },
+          clickable: true
         });
+      }
 
-        map.panTo(markerPosition);
-        map.setZoom(14);
-        map.panBy(0, -96);
-
-        infoWindow.setContent(contenter(result));
-        infoWindow.open(map, result);
-
-        markerHolder = result;
+      marker.setOptions({
+        icon: {
+          url: icons[marker.properties.type + '_sel'].icon,
+          size: new google.maps.Size(30, 55),
+          scaledSize: new google.maps.Size(30, 55)
+        },
+        clickable: false
       });
 
-      return resultsItem;
+      map.panTo(markerPosition);
+      map.setZoom(14);
+      map.panBy(0, -96);
+
+      infoWindow.setContent(contenter(marker));
+      infoWindow.open(map, marker);
+
+      markerHolder = marker;
+    }
+    
+    function getResult(result, distanceText, distance, callback) {
+      result.distance = distance;
+      resultText += '<p class="results__distance">' + distanceText + '</p>';
+
+      resultsItem.addEventListener('click', resultClick);
+      resultsItem.innerHTML = resultText;
+      result.result = resultsItem;
+      callback(result);
+    }
+    
+    if (!!(currentPosition) && !!(marker)) {
+      serviceDistance.getDistanceMatrix({
+        origins: [currentPosition],
+        destinations: [marker.getPosition()],
+        travelMode: 'DRIVING',
+        unitSystem: google.maps.UnitSystem.METRIC,
+        avoidHighways: false,
+        avoidTolls: false
+      }, function (response, status) {
+        if (status === 'OK') {
+          
+          getResult(result, response.rows[0].elements[0].distance.text, response.rows[0].elements[0].distance.value, function (result) {
+            sendResult(result);
+          });
+          
+          
+        } else {
+          resultsItem.addEventListener('click', resultClick);
+          resultsItem.innerHTML = resultText;
+          result.result = resultsItem;
+          console.log(status);
+          sendResult(result);
+        }
+      });
     } else {
-      
-      resultsNameTextBegin.textContent = 'Нет результатов поиска';
-      resultsName.appendChild(resultsNameTextBegin);
-      resultsItem.appendChild(resultsName);
-      if (!(resultsItem.classList.contains('results__item_is_passive'))) { resultsItem.classList.add('results__item_is_passive'); }
-      return resultsItem;
+      resultsItem.addEventListener('click', resultClick);
+      resultsItem.innerHTML = resultText;
+      result.result = resultsItem;
+      sendResult(result);
     }
 
-  }
-
-  function getChar(event) {
-    if (event.which === null) { // IE
-      if (event.keyCode < 32) {
-        return null; // спец. символ
-      }
-      return String.fromCharCode(event.keyCode);
-    }
-
-    if (event.which !== 0 && event.charCode !== 0) { // все кроме IE
-      if (event.which < 32) {
-        return null; // спец. символ;
-      }
-      return String.fromCharCode(event.which); // остальные
-    }
-
-    return null; // спец. символ
   }
   
   centerControlDiv.index = 1;
@@ -294,25 +312,26 @@ function initMap() {
       var markerPosition = marker.getPosition();
       
       if (!!(markerHolder)) {
-        markerHolder.setIcon({
-          url: icons[markerHolder.properties.type].icon,
-          size: new google.maps.Size(15, 15),
-          scaledSize: new google.maps.Size(15, 15),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(7.5, 7.5)
+        markerHolder.setOptions({
+          icon: {
+            url: icons[markerHolder.properties.type].icon,
+            size: new google.maps.Size(30, 55),
+            scaledSize: new google.maps.Size(30, 55)
+          },
+          clickable: true
         });
       }
       
-      marker.setIcon({
-        url: icons[marker.properties.type + '_sel'].icon,
-        size: new google.maps.Size(30, 49.5),
-        scaledSize: new google.maps.Size(30, 49.5),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(15, 47.2)
+      marker.setOptions({
+        icon: {
+          url: icons[marker.properties.type + '_sel'].icon,
+          size: new google.maps.Size(30, 55),
+          scaledSize: new google.maps.Size(30, 55)
+        },
+        clickable: false
       });
 
       map.panTo(markerPosition);
-      //map.setZoom(16);
       map.panBy(0, -96);
 
       infoWindow.setContent(contenter(marker));
@@ -324,12 +343,13 @@ function initMap() {
   });
   
   infoWindow.addListener('closeclick', function (event) {
-    markerHolder.setIcon({
-      url: icons[markerHolder.properties.type].icon,
-      size: new google.maps.Size(15, 15),
-      scaledSize: new google.maps.Size(15, 15),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(7.5, 7.5)
+    markerHolder.setOptions({
+      icon: {
+        url: icons[markerHolder.properties.type].icon,
+        size: new google.maps.Size(30, 55),
+        scaledSize: new google.maps.Size(30, 55)
+      },
+      clickable: true
     });
   });
   
@@ -351,41 +371,67 @@ function initMap() {
 
   });
   
-  google.maps.event.addDomListener(searchBar, 'keydown', function (event) {
-    var resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
-      searchResults = document.getElementsByClassName('results')[0];
-    if (event.keyCode === 8 && searchBar.value.length <= 3) {
-      if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
-      resultsArray.forEach(function (item) {
-        item.parentNode.removeChild(item);
-      });
-      
-    }
-  });
-  
-  google.maps.event.addDomListener(searchBar, 'keypress', function (event) {
+  google.maps.event.addDomListener(searchBar, 'input', function (event) {
     var searchResults = document.getElementsByClassName('js-search-results')[0],
       resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
-      char = getChar(event),
-      query = searchBar.value + char;
+      query = searchBar.value;
+    
     if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
+    
     resultsArray.forEach(function (item) {
       item.parentNode.removeChild(item);
     });
     
-
-    if (query.length >= 3) {
+    function findResult(query, sendHolder) {
+      var resultsHolder = [];
       markers.forEach(function (marker, i) {
         var regQuery = new RegExp(query, 'i'),
           mazdaName = marker.properties.name,
-          result = mazdaName.search(regQuery);
-
-        if (result !== -1) {
-          searchResults.appendChild(resulter(marker, result, query, map));
-        } else if (i === markers.length - 1 && searchResults.childNodes.length === 0) {
-          searchResults.appendChild(resulter());
+          matchPosition = mazdaName.search(regQuery);
+        resulter(marker, matchPosition, query, map, function (result) {
+          if (matchPosition !== -1) {
+            console.log(i + ' ' + markers.length);
+            resultsHolder.push(result);
+          }
+          if (i === markers.length - 1) {
+            console.log(resultsHolder);
+            sendHolder(resultsHolder);
+          }
+        });
+      });
+    }
+    
+    function resultSorter(resultsHolder, sendSorted) {
+      resultsHolder.sort(function (a, b) {
+        if (a.distance < b.distance) {
+          return -1;
         }
-        if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
+        if (a.distance > b.distance) {
+          return 1;
+        }
+        return 0;
+      });
+      sendSorted(resultsHolder);
+    }
+
+    if (query.length >= 2) {
+      
+      findResult(query, function (resultsHolder) {
+        console.log(resultsHolder);
+        resultSorter(resultsHolder, function (resultsHolder) {
+          var result = '';
+          console.log(resultsHolder);
+          if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
+          if (resultsHolder.length !== 0) {
+            resultsHolder.forEach(function (result) {
+              searchResults.appendChild(result.result);
+            });
+          } else {
+            result = resulter();
+            console.log(result);
+            searchResults.appendChild(result.result);
+          }
+        });
       });
     }
   });
