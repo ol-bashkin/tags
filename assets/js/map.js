@@ -50,10 +50,6 @@ function initMap() {
         coords = center.geometry.coordinates,
         latLng = new google.maps.LatLng(coords[1], coords[0]);
       
-      //markers.forEach(function (marker) {
-        
-      //});
-      
       return new google.maps.Marker({
 
         position: latLng,
@@ -189,30 +185,29 @@ function initMap() {
     );
   }
   
-  function resulter(marker, matchStart, query, map) {
+  function resulter(marker, matchStart, query, map, sendResult) {
     var resultsItem = document.createElement('div'),
-      resultName = !!(marker) ? '<p class="results__name">' + marker.properties.name.substr(0, matchStart) + '<span class="results__name_query">' + marker.properties.name.substr(matchStart, query.length) + '</span>' + marker.properties.name.substr(matchStart + query.length) + '</p>' : '<p class="results__name">Нет результатов поиска</p>',
-      resultCategory = !!(marker) ? '<p class="results__category>' + marker.properties.category + '</p>' : '',
-      resultDistance = '';
+      resultText = '',
+      result = {};
     
     resultsItem.classList.add('results__item');
     
-    if (!!(currentPosition) && !!(marker)) {
-      serviceDistance.getDistanceMatrix({
-        origins: [currentPosition],
-        destinations: [marker.getPosition()],
-        travelMode: 'DRIVING',
-        unitSystem: google.maps.UnitSystem.METRIC,
-        avoidHighways: false,
-        avoidTolls: false
-      }, function () {
-        
-      });
+    if (!!(marker)) {
+      resultText =
+        '<div class="results__left"><p class="results__name">' +
+          marker.properties.name.substr(0, matchStart) +
+          '<span class="results__name_query">' +
+            marker.properties.name.substr(matchStart, query.length) +
+          '</span>' +
+          marker.properties.name.substr(matchStart + query.length) +
+        '</p>';
+      resultText += '<p class="results__category">' + marker.properties.category + '</p></div>';
+      
+    } else {
+      resultsItem.classList.add('results__item_is_passive');
+      resultsItem.innerHTML = '<p class="results__name">Нет результатов поиска</p>';
+      return { result: resultsItem, distance: ''};
     }
-    
-    
-    if (!(marker)) {resultsItem.classList.add('results__item_is_passive'); }
-    resultsItem.innerHTML = resultName + resultCategory;
     
     function resultClick() {
       var resultsContainer = document.getElementsByClassName('js-search-results')[0],
@@ -256,9 +251,46 @@ function initMap() {
       markerHolder = marker;
     }
     
-    if (!!(marker)) {resultsItem.addEventListener('click', resultClick); }
+    function getResult(result, distance, callback) {
+      result.distance = distance;
+      resultText += '<p class="results__distance">' + result.distance + '</p>';
+
+      resultsItem.addEventListener('click', resultClick);
+      resultsItem.innerHTML = resultText;
+      result.result = resultsItem;
+      callback(result);
+    }
     
-    return resultsItem;
+    if (!!(currentPosition) && !!(marker)) {
+      serviceDistance.getDistanceMatrix({
+        origins: [currentPosition],
+        destinations: [marker.getPosition()],
+        travelMode: 'DRIVING',
+        unitSystem: google.maps.UnitSystem.METRIC,
+        avoidHighways: false,
+        avoidTolls: false
+      }, function (response, status) {
+        
+        if (status === 'OK') {
+          
+          getResult(result, response.rows[0].elements[0].distance.text, function (result) {
+            sendResult(result);
+          });
+          
+          
+        } else {
+          resultsItem.addEventListener('click', resultClick);
+          resultsItem.innerHTML = resultText;
+          result.result = resultsItem;
+          sendResult(result);
+        }
+      });
+    } else {
+      resultsItem.addEventListener('click', resultClick);
+      resultsItem.innerHTML = resultText;
+      result.result = resultsItem;
+      sendResult(result);
+    }
 
   }
   
@@ -345,23 +377,61 @@ function initMap() {
       query = searchBar.value;
     
     if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
+    
     resultsArray.forEach(function (item) {
       item.parentNode.removeChild(item);
     });
     
-
-    if (query.length >= 2) {
+    function findResult(query, sendHolder) {
+      var resultsHolder = [];
       markers.forEach(function (marker, i) {
         var regQuery = new RegExp(query, 'i'),
           mazdaName = marker.properties.name,
-          result = mazdaName.search(regQuery);
-
-        if (result !== -1) {
-          searchResults.appendChild(resulter(marker, result, query, map));
-        } else if (i === markers.length - 1 && searchResults.childNodes.length === 0) {
-          searchResults.appendChild(resulter());
+          matchPosition = mazdaName.search(regQuery);
+        resulter(marker, matchPosition, query, map, function (result) {
+          if (matchPosition !== -1) {
+            console.log(i + ' ' + markers.length);
+            resultsHolder.push(result);
+          }
+          if (i === markers.length - 1) {
+            console.log(resultsHolder);
+            sendHolder(resultsHolder);
+          }
+        });
+      });
+    }
+    
+    function resultSorter(resultsHolder, sendSorted) {
+      resultsHolder.sort(function (a, b) {
+        if (a.distance < b.distance) {
+          return -1;
         }
-        if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
+        if (a.distance > b.distance) {
+          return 1;
+        }
+        return 0;
+      });
+      sendSorted(resultsHolder);
+    }
+
+    if (query.length >= 2) {
+      
+      findResult(query, function (resultsHolder) {
+        console.log(resultsHolder);
+        resultSorter(resultsHolder, function (resultsHolder) {
+          var result = '';
+          console.log(resultsHolder);
+          if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
+          if (resultsHolder.length !== 0) {
+            resultsHolder.forEach(function (result) {
+              searchResults.appendChild(result.result);
+            });
+          } else {
+            result = resulter();
+            console.log(result);
+            searchResults.appendChild(result.result);
+          }
+        });
       });
     }
   });

@@ -431,7 +431,8 @@ header {
   .results__item {
     padding: 15px 15px;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out; }
+    transition: background-color 0.2s ease-in-out;
+    font-size: 0; }
     .results__item:active {
       background-color: #eef1f3; }
     .results__item_is_passive {
@@ -460,6 +461,21 @@ header {
     font-size: 11px;
     font-weight: 300;
     line-height: 17px; }
+  .results__left {
+    display: inline-block;
+    width: 80%;
+    font-size: 0; }
+  .results__distance {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    color: #459bfe;
+    text-align: right;
+    width: 19%;
+    display: inline-block;
+    vertical-align: top;
+    float: right; }
   .results_is_hidden {
     visibility: hidden; }
 

@@ -82,6 +82,7 @@
     padding: 15px 15px;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
+    font-size: 0;
     
     &:active {
       background-color: #eef1f3;
@@ -117,6 +118,20 @@
   }
   &__category {
     @include roboto(11px, 300, 17px);
+  }
+  &__left {
+    display: inline-block;
+    width: 80%;
+    font-size: 0;
+  }
+  &__distance {
+    @include roboto(14px, 400, 17px);
+    color: $primary-color;
+    text-align: right;
+    width: 19%;
+    display: inline-block;
+    vertical-align: top;
+    float: right;
   }
   
   &_is_hidden {
