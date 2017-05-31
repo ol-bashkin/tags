@@ -251,9 +251,9 @@ function initMap() {
       markerHolder = marker;
     }
     
-    function getResult(result, distance, callback) {
+    function getResult(result, distanceText, distance, callback) {
       result.distance = distance;
-      resultText += '<p class="results__distance">' + result.distance + '</p>';
+      resultText += '<p class="results__distance">' + distanceText + '</p>';
 
       resultsItem.addEventListener('click', resultClick);
       resultsItem.innerHTML = resultText;
@@ -270,10 +270,9 @@ function initMap() {
         avoidHighways: false,
         avoidTolls: false
       }, function (response, status) {
-        
         if (status === 'OK') {
           
-          getResult(result, response.rows[0].elements[0].distance.text, function (result) {
+          getResult(result, response.rows[0].elements[0].distance.text, response.rows[0].elements[0].distance.value, function (result) {
             sendResult(result);
           });
           
@@ -282,6 +281,7 @@ function initMap() {
           resultsItem.addEventListener('click', resultClick);
           resultsItem.innerHTML = resultText;
           result.result = resultsItem;
+          console.log(status);
           sendResult(result);
         }
       });
