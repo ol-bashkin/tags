@@ -73,6 +73,7 @@ function initMap() {
     infoWindow = new google.maps.InfoWindow({
       content: ''
     }),
+    infoContainer = document.getElementsByClassName('js-infowindow')[0],
     centerControlDiv = document.createElement('div'),
     centerControl = new CenterControl(centerControlDiv, map),
     trafficViewDiv = document.createElement('div'),
@@ -81,6 +82,7 @@ function initMap() {
     markerCluster = new MarkerClusterer(map, markers, {imagePath: '../assets/img/clusters/', maxZoom: 12}),
     markerHolder = '',
     searchBar = document.getElementsByClassName('js-search-bar')[0],
+    searchClear = document.getElementsByClassName('js-search-clear')[0],
     currentPosition = false,
     currentPositionMarker = new google.maps.Marker({
       icon: {
@@ -110,7 +112,6 @@ function initMap() {
         lng: position.coords.longitude
       };
       currentPositionMarker.setPosition(currentPosition);
-      //console.log('ouch');
     }, function () {
       handleLocationError(true, infoWindow, map.getCenter());
     }, {
@@ -263,18 +264,69 @@ function initMap() {
   //контент информационноо окна
   //'  <div class="infowindow__distance">' + distance                   + '</div>' +
 
-  function contenter(marker, distance) {
+  function contenter(marker, infoContainer) {
+    var infoClose = document.createElement('div'),
+      infoDistance = document.createElement('div'),
+      infoDiv = document.createElement('div');
     
-    return (
-      '<div class="infowindow">' +
-      '  <p class="infowindow__name">' +       marker.properties.name     + '</p>' +
-      '  <p class="infowindow__category">' +   marker.properties.category + '</p>' +
-      '  <p class="infowindow__address">' +    marker.properties.address  + '</p>' +
-      '  <p class="infowindow__phone">' +      marker.properties.phone    + '</p>' +
-      '  <p class="infowindow__workTime">' +   marker.properties.worktime + '</p>' +
+    infoContainer.innerHTML = '';
+    infoDiv.classList.add('infowindow');
+    infoClose.classList.add('infowindow__close', 'js-infowindow-close');
+    
+    infoClose.addEventListener('click', function () {
+      markerHolder.setOptions({
+        icon: {
+          url: icons[markerHolder.properties.type].icon,
+          size: new google.maps.Size(30, 55),
+          scaledSize: new google.maps.Size(30, 55)
+        },
+        clickable: true
+      });
+      infoContainer.innerHTML = '';
+      infoContainer.classList.remove('c-infowindow_is_visible');
+    });
+    function getDistance(marker, callback) {
+      if (!!(currentPosition) && !!(marker)) {
+        serviceDistance.getDistanceMatrix({
+          origins: [currentPosition],
+          destinations: [marker.getPosition()],
+          travelMode: 'DRIVING',
+          unitSystem: google.maps.UnitSystem.METRIC,
+          avoidHighways: false,
+          avoidTolls: false
+        }, function (response, status) {
+          if (status === 'OK') {
 
-      '</div>'
-    );
+            callback(response.rows[0].elements[0].distance.text);
+
+          } else {
+            console.log(status);
+            callback();
+          }
+        });
+      }
+    }
+    
+    
+    infoDiv.innerHTML = '  <p class="infowindow__name">' + marker.properties.name + '</p>' +
+      '  <p class="infowindow__category">' + marker.properties.category + '</p>' +
+      '  <p class="infowindow__address">' + marker.properties.address + '</p>' +
+      '  <p class="infowindow__phone">' + marker.properties.phone + '</p>' +
+      '  <p class="infowindow__workTime">' + marker.properties.worktime + '</p>';
+    
+    infoDiv.insertBefore(infoClose, infoDiv.firstChild);
+    
+    getDistance(marker, function (distance) {
+      if (!!(distance)) {
+        infoDistance.classList.add('infowindow__distance');
+        infoDistance.textContent = distance;
+        infoDiv.appendChild(infoDistance);
+      }
+    });
+    
+    
+    infoContainer.appendChild(infoDiv);
+    infoContainer.classList.add('c-infowindow_is_visible');
   }
   
   function resulter(marker, matchStart, query, map, sendResult) {
@@ -318,10 +370,9 @@ function initMap() {
 
       map.panTo(markerPosition);
       map.setZoom(14);
-      map.panBy(0, -96);
+      map.panBy(0, 50);
 
-      infoWindow.setContent(contenter(marker));
-      infoWindow.open(map, marker);
+      contenter(marker, infoContainer);
 
       markerHolder = marker;
     }
@@ -336,9 +387,7 @@ function initMap() {
         '</p>';
       resultText += '<p class="results__category">' + marker.properties.category + '</p>';
       resultText += '<p class="results__address">' + marker.properties.address + '</p>';
-      console.log(resultText);
       resultsItem.innerHTML = resultText;
-      console.log(resultsItem);
       resultsItem.addEventListener('click', resultClick);
       return resultsItem;
       
@@ -388,17 +437,16 @@ function initMap() {
       });
 
       map.panTo(markerPosition);
-      map.panBy(0, -96);
+      map.panBy(0, 50);
 
-      infoWindow.setContent(contenter(marker));
-      infoWindow.open(map, marker);
+      contenter(marker, infoContainer);
       
       markerHolder = marker;
 
     });
   });
   
-  infoWindow.addListener('closeclick', function (event) {
+  google.maps.event.addListener(infoContainer, 'click', function (event) {
     markerHolder.setOptions({
       icon: {
         url: icons[markerHolder.properties.type].icon,
@@ -407,6 +455,8 @@ function initMap() {
       },
       clickable: true
     });
+    infoContainer.innerHTML = '';
+    infoContainer.classList.remove('c-infowindow_is_visible');
   });
   
   //Исправление информационного окна
@@ -425,6 +475,16 @@ function initMap() {
     iwTipLeft.classList.add('infowindow__tipDecorator');
     iwTipRight.classList.add('infowindow__tipDecorator');
 
+  });
+  
+  google.maps.event.addDomListener(searchClear, 'click', function () {
+    var resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
+      searchResults = document.getElementsByClassName('js-search-results')[0];
+    searchBar.value = '';
+    if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
+    resultsArray.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
   });
   
   google.maps.event.addDomListener(searchBar, 'input', function (event) {

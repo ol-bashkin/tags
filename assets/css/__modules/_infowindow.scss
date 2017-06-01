@@ -1,7 +1,39 @@
+.c-infowindow {
+  box-sizing: border-box;
+  padding: 0 6px;
+  width: 100%;
+  position: absolute;
+  bottom: -250px;
+  visibility: hidden;
+  transition: visibility 0s linear 0.5s, bottom 0.5s ease-in-out;
+
+  
+  &_is_visible {
+    visibility: visible;
+    bottom: 0;
+    transition: visibility 0s linear 0s, bottom 0.5s ease-in-out;
+  }
+    
+}
 .infowindow {
-  background-color: transparent;
-  //padding: 20px 16px 18px;
-  //border-radius: 5px;
+  background-color: #fff;
+  font-size: 0;
+  padding: 20px 16px 18px;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+  
+  &__close {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-image: url('../img/__map_icons/cross.svg');
+    background-size: 12px 12px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    right: 17px;
+    top: 16px;
+  }
   
   &__name {
     @include roboto(14px, 400, 17px);
@@ -24,17 +56,31 @@
     @include roboto(11px, 400, 17px);
     color: $primary-color;
     display: inline-block;
-    width: 49%;
+    width: 30%;
     padding-left: 22px;
+    margin-top: 8px;
     background-image: url('../img/__map_icons/worktime.svg');
     background-repeat: no-repeat;
     background-position: 0 1px;
     background-size: 14px 14px;
   }
+  
+  
+  
   &__distance {
-    display: inline-block;
-    width: 49%;
+    @include roboto(11px, 400, 17px);
+    color: $primary-color;
     text-align: right;
+    display: inline-block;
+    float: right;
+    width: 30%;
+    padding-right: 22px;
+    margin-top: 8px;
+    background-image: url('data:image/svg+xml;utf8,<svg enable-background="new 0 0 16 15" viewBox="0 0 16 15" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="m14.527 4.95-.854-2.915c-.123-.422-.363-.807-.694-1.112-.39-.358-.844-.548-1.312-.548h-7.334c-.468 0-.922.189-1.312.548-.331.305-.571.69-.694 1.111l-.855 2.919c-.803.297-1.347 1.071-1.347 1.955v3.934c0 .474.409.889.875.889h.125v1.493c0 .773.617 1.401 1.375 1.401h1.333c.758 0 1.375-.628 1.373-1.359l.129-1.141h5.331l.126 1.099c0 .773.617 1.401 1.375 1.401h1.333c.758 0 1.375-.628 1.375-1.401v-1.494h.125c.493 0 .875-.527.875-.98v-4c0-.839-.511-1.513-1.348-1.8zm-11.48-2.705c.085-.291.252-.557.482-.77.174-.159.454-.35.804-.35h7.333c.35 0 .63.19.804.35.23.212.397.479.482.771l.771 2.63h-11.446zm6.578 9.13h-3.25v-.875c0-.482.393-.875.875-.875h1.5c.482 0 .875.393.875.875zm5.5-.625c0 .089-.09.215-.125.23h-.875v2.243c0 .353-.286.651-.625.651h-1.333c-.339 0-.625-.298-.627-.693l-.204-1.807h-.96v-.874c0-.896-.729-1.625-1.625-1.625h-1.5c-.896 0-1.625.729-1.625 1.625v.875h-.96l-.207 1.849c0 .353-.286.651-.625.651h-1.334c-.339 0-.625-.298-.625-.651v-2.244h-.875c-.051 0-.125-.073-.125-.139v-3.933c0-.594.404-1.127.963-1.283h12.33c.313.085.957.352.957 1.125z"/><path d="m3.75 7.375c-.896 0-1.625.729-1.625 1.625s.729 1.625 1.625 1.625 1.625-.729 1.625-1.625-.729-1.625-1.625-1.625zm0 2.5c-.482 0-.875-.393-.875-.875s.393-.875.875-.875.875.393.875.875-.393.875-.875.875z"/><path d="m12.25 7.375c-.896 0-1.625.729-1.625 1.625s.729 1.625 1.625 1.625 1.625-.729 1.625-1.625-.729-1.625-1.625-1.625zm0 2.5c-.482 0-.875-.393-.875-.875s.393-.875.875-.875.875.393.875.875-.393.875-.875.875z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: 100% 1px;
+    background-size: 16px 15px;
+    vertical-align: top;
   }
   &__decorator {
     background-color: transparent !important;

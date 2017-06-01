@@ -1078,7 +1078,12 @@ ClusterIcon.prototype.onAdd = function() {
   var isDragging = false;
   google.maps.event.addDomListener(this.div_, 'click', function(event) {
     // Only perform click when not preceded by a drag
+    var infoContainer = document.getElementsByClassName('js-infowindow')[0];
     if (!isDragging) {
+      if (infoContainer.classList.contains('c-infowindow_is_visible')) {
+        infoContainer.classList.remove('c-infowindow_is_visible');
+        infoContainer.innerHTML = '';
+      }
       that.triggerClusterClick(event);
     }
   });
