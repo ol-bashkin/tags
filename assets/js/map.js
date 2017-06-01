@@ -110,17 +110,108 @@ function initMap() {
         lng: position.coords.longitude
       };
       currentPositionMarker.setPosition(currentPosition);
+      //console.log('ouch');
     }, function () {
       handleLocationError(true, infoWindow, map.getCenter());
     }, {
       enableHighAccuracy: true,
-      timeout: 30000,
+      timeout: 60000,
       maximumAge: 0
     });
+    
   } else {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
+    
   }
+  /* Получение архива расстояний до маркера
+  
+  currentPositionMarker.addListener('position_changed', function () {
+    var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest,
+      xhr = new XHR(),
+      userLatLng = currentPositionMarker.getPosition(),
+      distances = [],
+      destinationsArray = [],
+      splicedDestinations = [],
+      request = [],
+      requestBase = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=metric',
+      requestAPI = '&key=AIzaSyAVVH_sNL6bjByqSGCJogNH65U_CVDkSiI',
+      requestOrigin = '&origins=' + userLatLng.lat() + ',' + userLatLng.lng(),
+      requestDestinations = '&destinations=',
+      iterations = 0;
+    
+    destinationsArray = markers.map(function (marker) {
+      var distLatLng = marker.getPosition(),
+        destination = distLatLng.lat() + ',' + distLatLng.lng();
+      return destination;
+    });
+    
+    while (destinationsArray.length > 0) {
+      splicedDestinations.push(destinationsArray.splice(0, 25).join('|'));
+    }
+    
+    request = splicedDestinations.map(function (destinations) {
+      return requestBase + requestOrigin + requestDestinations + destinations + requestAPI;
+    });
+    
+    function waitResponse(request) {
+      var currentRequest = request.shift();
+      console.log(currentRequest);
+      if (request.length > 0) {
+
+        window.setTimeout(function () {
+          xhr.open('GET', currentRequest, true);
+
+          xhr.onload = function () {
+            var response = JSON.parse(this.responseText),
+              responseDists = [];
+            if (!!(response.rows[0])) {
+              response.rows[0].elements.map(function (element) {
+                return {distanceText: element.distance.text, distanceValue: element.distance.value};
+              });
+              distances = distances.concat(responseDists.concat(waitResponse(request)));
+              console.log(distances);
+            } else {
+              console.log('ERROR: ' + response.status);
+            }
+
+          };
+
+          xhr.onerror = function () {
+            console.log('Ошибка ' + this.status);
+          };
+
+          xhr.send();
+        }, '500');
+      } else {
+        window.setTimeout(function () {
+          xhr.open('GET', currentRequest, true);
+
+          xhr.onload = function () {
+            var response = JSON.parse(this.responseText),
+              responseDists = response.rows[0].elements.map(function (element) {
+                return {distanceText: element.distance.text, distanceValue: element.distance.value};
+              });
+            
+            distances = distances.concat(responseDists);
+            console.log(distances);
+          };
+
+          xhr.onerror = function () {
+            console.log('Ошибка ' + this.status);
+          };
+
+          xhr.send();
+        }, '251');
+      }
+      
+    }
+    
+    waitResponse(request);
+    
+  });
+  
+  */
   
   function CenterControl(controlDiv, map) {
     var controlUI = document.createElement('div');
@@ -173,6 +264,7 @@ function initMap() {
   //'  <div class="infowindow__distance">' + distance                   + '</div>' +
 
   function contenter(marker, distance) {
+    
     return (
       '<div class="infowindow">' +
       '  <p class="infowindow__name">' +       marker.properties.name     + '</p>' +
@@ -191,23 +283,6 @@ function initMap() {
       result = {};
     
     resultsItem.classList.add('results__item');
-    
-    if (!!(marker)) {
-      resultText =
-        '<div class="results__left"><p class="results__name">' +
-          marker.properties.name.substr(0, matchStart) +
-          '<span class="results__name_query">' +
-            marker.properties.name.substr(matchStart, query.length) +
-          '</span>' +
-          marker.properties.name.substr(matchStart + query.length) +
-        '</p>';
-      resultText += '<p class="results__category">' + marker.properties.category + '</p></div>';
-      
-    } else {
-      resultsItem.classList.add('results__item_is_passive');
-      resultsItem.innerHTML = '<p class="results__name">Нет результатов поиска</p>';
-      return { result: resultsItem, distance: ''};
-    }
     
     function resultClick() {
       var resultsContainer = document.getElementsByClassName('js-search-results')[0],
@@ -251,45 +326,25 @@ function initMap() {
       markerHolder = marker;
     }
     
-    function getResult(result, distanceText, distance, callback) {
-      result.distance = distance;
-      resultText += '<p class="results__distance">' + distanceText + '</p>';
-
-      resultsItem.addEventListener('click', resultClick);
+    if (!!(marker)) {
+      resultText =
+        '<div class="results__left"><p class="results__name">' +
+          marker.properties.name.substr(0, matchStart) +
+          '<span class="results__name_query">' +
+            marker.properties.name.substr(matchStart, query.length) +
+          '</span>' +
+          marker.properties.name.substr(matchStart + query.length) +
+        '</p>';
+      resultText += '<p class="results__category">' + marker.properties.category + '</p></div>';
       resultsItem.innerHTML = resultText;
-      result.result = resultsItem;
-      callback(result);
-    }
-    
-    if (!!(currentPosition) && !!(marker)) {
-      serviceDistance.getDistanceMatrix({
-        origins: [currentPosition],
-        destinations: [marker.getPosition()],
-        travelMode: 'DRIVING',
-        unitSystem: google.maps.UnitSystem.METRIC,
-        avoidHighways: false,
-        avoidTolls: false
-      }, function (response, status) {
-        if (status === 'OK') {
-          
-          getResult(result, response.rows[0].elements[0].distance.text, response.rows[0].elements[0].distance.value, function (result) {
-            sendResult(result);
-          });
-          
-          
-        } else {
-          resultsItem.addEventListener('click', resultClick);
-          resultsItem.innerHTML = resultText;
-          result.result = resultsItem;
-          console.log(status);
-          sendResult(result);
-        }
-      });
+      resultsItem.addEventListener('click', resultClick);
+      return resultsItem;
+      
     } else {
-      resultsItem.addEventListener('click', resultClick);
-      resultsItem.innerHTML = resultText;
-      result.result = resultsItem;
-      sendResult(result);
+      resultsItem.classList.add('results__item_is_passive');
+      resultsItem.innerHTML = '<p class="results__name">Нет результатов поиска</p>';
+      console.log(resultsItem);
+      return resultsItem;
     }
 
   }
@@ -374,7 +429,8 @@ function initMap() {
   google.maps.event.addDomListener(searchBar, 'input', function (event) {
     var searchResults = document.getElementsByClassName('js-search-results')[0],
       resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
-      query = searchBar.value;
+      query = searchBar.value,
+      resultsHolder = [];
     
     if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
     
@@ -382,24 +438,7 @@ function initMap() {
       item.parentNode.removeChild(item);
     });
     
-    function findResult(query, sendHolder) {
-      var resultsHolder = [];
-      markers.forEach(function (marker, i) {
-        var regQuery = new RegExp(query, 'i'),
-          mazdaName = marker.properties.name,
-          matchPosition = mazdaName.search(regQuery);
-        resulter(marker, matchPosition, query, map, function (result) {
-          if (matchPosition !== -1) {
-            console.log(i + ' ' + markers.length);
-            resultsHolder.push(result);
-          }
-          if (i === markers.length - 1) {
-            console.log(resultsHolder);
-            sendHolder(resultsHolder);
-          }
-        });
-      });
-    }
+    /* сортировка элементов выдачи
     
     function resultSorter(resultsHolder, sendSorted) {
       resultsHolder.sort(function (a, b) {
@@ -413,26 +452,28 @@ function initMap() {
       });
       sendSorted(resultsHolder);
     }
+    */
 
     if (query.length >= 2) {
       
-      findResult(query, function (resultsHolder) {
-        console.log(resultsHolder);
-        resultSorter(resultsHolder, function (resultsHolder) {
-          var result = '';
-          console.log(resultsHolder);
-          if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
-          if (resultsHolder.length !== 0) {
-            resultsHolder.forEach(function (result) {
-              searchResults.appendChild(result.result);
-            });
-          } else {
-            result = resulter();
-            console.log(result);
-            searchResults.appendChild(result.result);
-          }
-        });
+      markers.forEach(function (marker, i) {
+        var regQuery = new RegExp(query, 'i'),
+          mazdaName = marker.properties.name,
+          matchPosition = mazdaName.search(regQuery),
+          result = '';
+        console.log(searchResults.childNodes)
+        if (matchPosition !== -1) {
+          result = resulter(marker, matchPosition, query, map);
+          searchResults.appendChild(result);
+        } else if (i === markers.length - 1 && searchResults.childNodes.length === 0) {
+          console.log('niet')
+          result = resulter();
+          searchResults.appendChild(result);
+        }
       });
+      
+      if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
     }
+
   });
 }
