@@ -119,6 +119,9 @@
   &__category {
     @include roboto(11px, 300, 17px);
   }
+  &__address {
+    @include roboto(11px, 300, 17px);
+  }
   &__left {
     display: inline-block;
     width: 80%;

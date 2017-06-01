@@ -327,23 +327,24 @@ function initMap() {
     }
     
     if (!!(marker)) {
-      resultText =
-        '<div class="results__left"><p class="results__name">' +
-          marker.properties.name.substr(0, matchStart) +
-          '<span class="results__name_query">' +
-            marker.properties.name.substr(matchStart, query.length) +
-          '</span>' +
-          marker.properties.name.substr(matchStart + query.length) +
+      resultText = '<p class="results__name">' +
+        marker.properties.name.substr(0, matchStart) +
+        '<span class="results__name_query">' +
+          marker.properties.name.substr(matchStart, query.length) +
+        '</span>' +
+        marker.properties.name.substr(matchStart + query.length) +
         '</p>';
-      resultText += '<p class="results__category">' + marker.properties.category + '</p></div>';
+      resultText += '<p class="results__category">' + marker.properties.category + '</p>';
+      resultText += '<p class="results__address">' + marker.properties.address + '</p>';
+      console.log(resultText);
       resultsItem.innerHTML = resultText;
+      console.log(resultsItem);
       resultsItem.addEventListener('click', resultClick);
       return resultsItem;
       
     } else {
       resultsItem.classList.add('results__item_is_passive');
       resultsItem.innerHTML = '<p class="results__name">Нет результатов поиска</p>';
-      console.log(resultsItem);
       return resultsItem;
     }
 
@@ -461,12 +462,10 @@ function initMap() {
           mazdaName = marker.properties.name,
           matchPosition = mazdaName.search(regQuery),
           result = '';
-        console.log(searchResults.childNodes)
         if (matchPosition !== -1) {
           result = resulter(marker, matchPosition, query, map);
           searchResults.appendChild(result);
         } else if (i === markers.length - 1 && searchResults.childNodes.length === 0) {
-          console.log('niet')
           result = resulter();
           searchResults.appendChild(result);
         }
