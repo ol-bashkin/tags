@@ -491,13 +491,9 @@ function initMap() {
     });
   });
   
-  google.maps.event.addListener(infoContainer, 'click', function (event) {
-    closeInfo();
-  });
-  
   //Исправление информационного окна
 
-  google.maps.event.addListener(infoWindow, 'domready', function () {
+  infoWindow.addListener('domready', function () {
     var iw    = document.getElementsByClassName('gm-style-iw')[0],
       iwBg    = iw.previousSibling,
       iwDecor = iwBg.children,
@@ -527,6 +523,7 @@ function initMap() {
     var searchResults = document.getElementsByClassName('js-search-results')[0],
       resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
       query = searchBar.value;
+    searchBar.selectionStart = query.length;
     closeInfo();
     if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
   });
