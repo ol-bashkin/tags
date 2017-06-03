@@ -370,6 +370,7 @@ function initMap() {
     });
     
     infoDiv.innerHTML = '  <p class="infowindow__category">' + marker.properties.category + '</p>' +
+      '  <p class="infowindow__discount">' + marker.properties.discount + '</p>' +
       '  <p class="infowindow__address">' + marker.properties.address + '</p>' +
       '  <p class="infowindow__phone">' + marker.properties.phone + '</p>' +
       '  <p class="infowindow__workTime">' + marker.properties.worktime + '</p>';

@@ -26,7 +26,7 @@
     position: absolute;
     width: 24px;
     height: 24px;
-    background-image: url('../img/__map_icons/cross.svg');
+    background-image: url("data:image/svg+xml;utf8,<svg enable-background='new 0 0 12 12' viewBox='0 0 12 12' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'><path d='m6.707 6 4.953-4.953c.195-.195.195-.512 0-.707s-.512-.195-.707 0l-4.953 4.953-4.953-4.954c-.195-.195-.512-.195-.707 0s-.195.512 0 .707l4.953 4.954-4.953 4.953c-.195.195-.195.512 0 .707.098.098.226.146.354.146s.256-.049.354-.146l4.952-4.953 4.953 4.953c.098.098.226.146.354.146s.256-.049.354-.146c.195-.195.195-.512 0-.707z' fill='#459bfe'/></svg>");
     background-size: 12px 12px;
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -41,6 +41,11 @@
   &__category {
     @include roboto(11px, 300, 14px);
     margin-top: 5px;
+  }
+  &__discount {
+    @include roboto(11px, 300, 14px);
+    margin-top: 5px;
+    color: $primary-color;
   }
   &__address {
     @include roboto(11px, 300, 14px);
@@ -59,7 +64,7 @@
     width: 30%;
     padding-left: 22px;
     margin-top: 8px;
-    background-image: url('../img/__map_icons/worktime.svg');
+    background-image: url('data:image/svg+xml;utf8,<svg enable-background="new 0 0 14 14" viewBox="0 0 14 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="m7 13.6c-3.7 0-6.6-3-6.6-6.6s3-6.6 6.6-6.6c3.7 0 6.6 3 6.6 6.6s-2.9 6.6-6.6 6.6zm0-12.5c-3.2 0-5.9 2.7-5.9 5.9s2.6 5.9 5.9 5.9c3.2 0 5.9-2.6 5.9-5.9s-2.7-5.9-5.9-5.9z"/><path d="m9.5 7.4h-2.9v-3.9h.8v3.1h2.1z"/></svg>');
     background-repeat: no-repeat;
     background-position: 0 1px;
     background-size: 14px 14px;
