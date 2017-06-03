@@ -125,6 +125,30 @@ function initMap() {
     handleLocationError(false, infoWindow, map.getCenter());
     
   }
+  
+  function listenPosition() {
+    if (currentPositionMarker.getVisible()) {
+      map.panTo(currentPositionMarker.getPosition());
+    }
+  }
+  
+  currentPositionMarker.addListener('position_changed', function () {
+    listenPosition();
+  });
+  
+  map.addListener('drag_start', function () {
+    google.maps.event.clearListeners(currentPositionMarker, 'position_changed');
+  });
+  
+  map.addListener('idle', function () {
+    window.setTimeout(function () {
+      google.maps.event.clearListeners(currentPositionMarker, 'position_changed');
+      currentPositionMarker.addListener('position_changed', function () {
+        listenPosition();
+      });
+    }, '180000');
+  });
+  
   /* Получение архива расстояний до маркера
   
   currentPositionMarker.addListener('position_changed', function () {
