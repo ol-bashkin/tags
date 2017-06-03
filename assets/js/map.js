@@ -328,7 +328,8 @@ function initMap() {
       infoDistance = document.createElement('div'),
       infoName = document.createElement('div'),
       infoDiv = document.createElement('div'),
-      infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
+      infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10),
+      markerPosition = marker.getPosition();
     
     closeInfo();
     
@@ -388,6 +389,25 @@ function initMap() {
     infoContainer.appendChild(infoDiv);
     centerControlDiv.style.bottom = infoHeight + 14 + 'px';
     trafficViewDiv.style.bottom = infoHeight + 77 + 'px';
+    
+    marker.setOptions({
+      icon: {
+        url: icons[marker.properties.type + '_sel'].icon,
+        size: markerSize,
+        scaledSize: markerSize
+      },
+      clickable: true
+    });
+    
+    if (!(marker.getMap())) {
+      map.setZoom(14);
+      marker.setMap(map);
+    }
+
+    map.panTo(markerPosition);
+    map.panBy(0, 50);
+    
+    markerHolder = marker;
 
     infoContainer.classList.add('c-infowindow_is_visible');
   }
@@ -402,8 +422,7 @@ function initMap() {
     function resultClick() {
       var resultsContainer = document.getElementsByClassName('js-search-results')[0],
         resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
-        searchBar = document.getElementsByClassName('js-search-bar')[0],
-        markerPosition = marker.getPosition();
+        searchBar = document.getElementsByClassName('js-search-bar')[0];
       
       if (!(resultsContainer.classList.contains('results_is_hidden'))) { resultsContainer.classList.add('results_is_hidden'); }
       
@@ -417,21 +436,6 @@ function initMap() {
           clickable: true
         });
       }
-
-      marker.setOptions({
-        icon: {
-          url: icons[marker.properties.type + '_sel'].icon,
-          size: markerSize,
-          scaledSize: markerSize
-        },
-        clickable: true
-      });
-
-      map.panTo(markerPosition);
-      map.setZoom(14);
-      map.panBy(0, 50);
-      
-      markerHolder = marker;
       
       contenter(marker, infoContainer);
 
@@ -484,8 +488,6 @@ function initMap() {
   markers.forEach(function (marker) {
     marker.addListener('click', function (event) {
       
-      var markerPosition = marker.getPosition();
-      
       if (!!(markerHolder)) {
         markerHolder.setOptions({
           icon: {
@@ -496,20 +498,6 @@ function initMap() {
           clickable: true
         });
       }
-      
-      marker.setOptions({
-        icon: {
-          url: icons[marker.properties.type + '_sel'].icon,
-          size: markerSize,
-          scaledSize: markerSize
-        },
-        clickable: true
-      });
-
-      map.panTo(markerPosition);
-      map.panBy(0, 50);
-      
-      markerHolder = marker;
       
       contenter(marker, infoContainer);
     });
