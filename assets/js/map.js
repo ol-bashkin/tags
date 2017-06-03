@@ -432,6 +432,30 @@ function initMap() {
 
   }
   
+  function closeInfo() {
+    var infoHeight = '';
+    if (infoContainer.classList.contains('c-infowindow_is_visible')) {
+      window.setTimeout(function () {
+        infoContainer.innerHTML = '';
+        infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
+      }, '300');
+      infoContainer.classList.remove('c-infowindow_is_visible');
+      
+      centerControlDiv.style.bottom = infoHeight + 14 + 'px';
+      trafficViewDiv.style.bottom = infoHeight + 77 + 'px';
+    }
+    if (!!(markerHolder)) {
+      markerHolder.setOptions({
+        icon: {
+          url: icons[markerHolder.properties.type].icon,
+          size: markerSize,
+          scaledSize: markerSize
+        },
+        clickable: true
+      });
+    }
+  }
+  
   map.addListener('idle', function () {
     var infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
     centerControlDiv.style.bottom = infoHeight + 14 + 'px';
@@ -520,6 +544,7 @@ function initMap() {
     var searchResults = document.getElementsByClassName('js-search-results')[0],
       resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
       query = searchBar.value;
+    closeInfo();
     if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
   });
   
@@ -528,7 +553,6 @@ function initMap() {
       resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
       query = searchBar.value;
       //resultsHolder = [];
-    
     if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
     
     resultsArray.forEach(function (item) {
@@ -572,7 +596,6 @@ function initMap() {
           searchResults.appendChild(result);
         }
       });
-      
       if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
     }
 
