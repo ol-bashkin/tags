@@ -69,6 +69,10 @@
       color: #000000;
       text-align: center;
     }
+    
+    &_has_error {
+      border-color: $red;
+    }
   }
 
   &__error {
@@ -95,6 +99,10 @@
       &:before {
         top: -2px;
       }
+    }
+    
+    &_is_visible {
+      display: block;
     }
   }
 

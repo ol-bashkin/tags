@@ -81,18 +81,6 @@ header {
   font-size: 0;
 }
 
-.js- {
-  &show {
-    &Error {
-      display: block;
-
-      &Border {
-        border-color: $red;
-      }
-    }
-  }
-}
-
 @import '__modules/menu';
 @import '__modules/reg';
 @import '__modules/search';
