@@ -271,20 +271,20 @@ function initMap() {
     disableAutoPan: true
   });
   
-  //контент информационноо окна
-  //'  <div class="infowindow__distance">' + distance                   + '</div>' +
-
-  function contenter(marker, infoContainer) {
-    var infoClose = document.createElement('div'),
-      infoDistance = document.createElement('div'),
-      infoDiv = document.createElement('div'),
+  function closeInfo() {
+    var infoHeight = '';
+    if (infoContainer.classList.contains('c-infowindow_is_visible')) {
+      //window.setTimeout(function () {
+      infoContainer.innerHTML = '';
       infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
-    
-    infoContainer.innerHTML = '';
-    infoDiv.classList.add('infowindow');
-    infoClose.classList.add('infowindow__close', 'js-infowindow-close');
-    
-    infoClose.addEventListener('click', function () {
+      //}, '300');
+      
+      infoContainer.classList.remove('c-infowindow_is_visible');
+      
+      centerControlDiv.style.bottom = infoHeight + 14 + 'px';
+      trafficViewDiv.style.bottom = infoHeight + 77 + 'px';
+    }
+    if (!!(markerHolder)) {
       markerHolder.setOptions({
         icon: {
           url: icons[markerHolder.properties.type].icon,
@@ -293,13 +293,26 @@ function initMap() {
         },
         clickable: true
       });
-      
-      infoContainer.classList.remove('c-infowindow_is_visible');
-      centerControlDiv.style.bottom = infoHeight + 14 + 'px';
-      trafficViewDiv.style.bottom = infoHeight + 77 + 'px';
-      window.setTimeout(function () {
-        infoContainer.innerHTML = '';
-      }, '300');
+    }
+  }
+  
+  //контент информационноо окна
+  //'  <div class="infowindow__distance">' + distance                   + '</div>' +
+
+  function contenter(marker, infoContainer) {
+    var infoClose = document.createElement('div'),
+      infoDistance = document.createElement('div'),
+      infoName = document.createElement('div'),
+      infoDiv = document.createElement('div'),
+      infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
+    
+    closeInfo();
+    
+    infoDiv.classList.add('infowindow');
+    infoClose.classList.add('infowindow__close', 'js-infowindow-close');
+    
+    infoClose.addEventListener('click', function () {
+      closeInfo();
     });
     
     function getDistance(marker, callback) {
@@ -323,14 +336,20 @@ function initMap() {
         });
       }
     }
+    infoName.classList.add('infowindow__name');
+    infoName.textContent = marker.properties.name;
     
+    infoName.addEventListener('click', function (event) {
+      map.panTo(markerHolder.getPosition());
+      map.panBy(0, 50);
+    });
     
-    infoDiv.innerHTML = '  <p class="infowindow__name">' + marker.properties.name + '</p>' +
-      '  <p class="infowindow__category">' + marker.properties.category + '</p>' +
+    infoDiv.innerHTML = '  <p class="infowindow__category">' + marker.properties.category + '</p>' +
       '  <p class="infowindow__address">' + marker.properties.address + '</p>' +
       '  <p class="infowindow__phone">' + marker.properties.phone + '</p>' +
       '  <p class="infowindow__workTime">' + marker.properties.worktime + '</p>';
     
+    infoDiv.insertBefore(infoName, infoDiv.firstChild);
     infoDiv.insertBefore(infoClose, infoDiv.firstChild);
     
     getDistance(marker, function (distance) {
@@ -364,11 +383,6 @@ function initMap() {
       
       if (!(resultsContainer.classList.contains('results_is_hidden'))) { resultsContainer.classList.add('results_is_hidden'); }
       
-      /* Очищение результатов поиска
-      resultsArray.forEach(function (item) {
-        item.parentNode.removeChild(item);
-      });*/
-      
       if (!!(markerHolder)) {
         markerHolder.setOptions({
           icon: {
@@ -386,7 +400,7 @@ function initMap() {
           size: markerSize,
           scaledSize: markerSize
         },
-        clickable: false
+        clickable: true
       });
 
       map.panTo(markerPosition);
@@ -432,29 +446,7 @@ function initMap() {
 
   }
   
-  function closeInfo() {
-    var infoHeight = '';
-    if (infoContainer.classList.contains('c-infowindow_is_visible')) {
-      window.setTimeout(function () {
-        infoContainer.innerHTML = '';
-        infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
-      }, '300');
-      infoContainer.classList.remove('c-infowindow_is_visible');
-      
-      centerControlDiv.style.bottom = infoHeight + 14 + 'px';
-      trafficViewDiv.style.bottom = infoHeight + 77 + 'px';
-    }
-    if (!!(markerHolder)) {
-      markerHolder.setOptions({
-        icon: {
-          url: icons[markerHolder.properties.type].icon,
-          size: markerSize,
-          scaledSize: markerSize
-        },
-        clickable: true
-      });
-    }
-  }
+  
   
   map.addListener('idle', function () {
     var infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
@@ -487,7 +479,7 @@ function initMap() {
           size: markerSize,
           scaledSize: markerSize
         },
-        clickable: false
+        clickable: true
       });
 
       map.panTo(markerPosition);
@@ -500,16 +492,7 @@ function initMap() {
   });
   
   google.maps.event.addListener(infoContainer, 'click', function (event) {
-    markerHolder.setOptions({
-      icon: {
-        url: icons[markerHolder.properties.type].icon,
-        size: markerSize,
-        scaledSize: markerSize
-      },
-      clickable: true
-    });
-    infoContainer.innerHTML = '';
-    infoContainer.classList.remove('c-infowindow_is_visible');
+    closeInfo();
   });
   
   //Исправление информационного окна
