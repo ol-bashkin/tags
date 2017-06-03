@@ -137,6 +137,7 @@ function initMap() {
   });
   
   map.addListener('drag_start', function () {
+    console.log('тяг тяг');
     google.maps.event.clearListeners(currentPositionMarker, 'position_changed');
   });
   
