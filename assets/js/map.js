@@ -31,20 +31,21 @@ function initMap() {
       },
       partner_sel: {
         icon: iconBase + 'icon_orange_sel.svg'
-      },
+      }/*,
       premium: {
-        icon: iconBase + 'icon_purple.svg'
+        icon: iconBase + 'icon_purple_2.svg'
       },
       premium_sel: {
-        icon: iconBase + 'icon_purple_sel.svg'
+        icon: iconBase + 'icon_purple_sel_2.svg'
       },
       elite: {
         icon: iconBase + 'icon_green.svg'
       },
       elite_sel: {
         icon: iconBase + 'icon_green_sel.svg'
-      }
+      }*/
     },
+    markerSize = new google.maps.Size(30, 30),
     markers = mazdaCenters.features.map(function (center) {
       var properties = center.properties,
         coords = center.geometry.coordinates,
@@ -57,12 +58,12 @@ function initMap() {
 
         icon: {
           url: icons[properties.type].icon,
-          size: new google.maps.Size(30, 55),
-          scaledSize: new google.maps.Size(30, 55),
-          anchor: new google.maps.Point(15, 47.2)
+          size: markerSize,
+          scaledSize: markerSize,
+          anchor: new google.maps.Point(15, 15)
         },
         shape: {
-          coords: [15, 47.2, 15],
+          coords: [15, 15, 15],
           type: 'circle'
         },
         optimized: false,
@@ -89,7 +90,6 @@ function initMap() {
         url: '../assets/img/__map_icons/currentposition.svg',
         size: new google.maps.Size(30, 50),
         scaledSize: new google.maps.Size(30, 50),
-        origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(15, 47.2)
       },
       visible: false,
@@ -258,16 +258,27 @@ function initMap() {
 
     });
   }
+  centerControlDiv.style.transition = 'bottom 0.3s ease-in-out';
+  trafficViewDiv.style.transition = 'bottom 0.3s ease-in-out';
   
-  
+  centerControlDiv.index = 1;
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 
+  trafficViewDiv.index = 2;
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(trafficViewDiv);
+
+  infoWindow.setOptions({
+    disableAutoPan: true
+  });
+  
   //контент информационноо окна
   //'  <div class="infowindow__distance">' + distance                   + '</div>' +
 
   function contenter(marker, infoContainer) {
     var infoClose = document.createElement('div'),
       infoDistance = document.createElement('div'),
-      infoDiv = document.createElement('div');
+      infoDiv = document.createElement('div'),
+      infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
     
     infoContainer.innerHTML = '';
     infoDiv.classList.add('infowindow');
@@ -277,14 +288,20 @@ function initMap() {
       markerHolder.setOptions({
         icon: {
           url: icons[markerHolder.properties.type].icon,
-          size: new google.maps.Size(30, 55),
-          scaledSize: new google.maps.Size(30, 55)
+          size: markerSize,
+          scaledSize: markerSize
         },
         clickable: true
       });
-      infoContainer.innerHTML = '';
+      
       infoContainer.classList.remove('c-infowindow_is_visible');
+      centerControlDiv.style.bottom = infoHeight + 14 + 'px';
+      trafficViewDiv.style.bottom = infoHeight + 77 + 'px';
+      window.setTimeout(function () {
+        infoContainer.innerHTML = '';
+      }, '300');
     });
+    
     function getDistance(marker, callback) {
       if (!!(currentPosition) && !!(marker)) {
         serviceDistance.getDistanceMatrix({
@@ -326,10 +343,13 @@ function initMap() {
     
     
     infoContainer.appendChild(infoDiv);
+    centerControlDiv.style.bottom = infoHeight + 14 + 'px';
+    trafficViewDiv.style.bottom = infoHeight + 77 + 'px';
+
     infoContainer.classList.add('c-infowindow_is_visible');
   }
   
-  function resulter(marker, matchStart, query, map, sendResult) {
+  function resulter(marker, matchStart, query, map) {
     var resultsItem = document.createElement('div'),
       resultText = '',
       result = {};
@@ -344,16 +364,17 @@ function initMap() {
       
       if (!(resultsContainer.classList.contains('results_is_hidden'))) { resultsContainer.classList.add('results_is_hidden'); }
       
+      /* Очищение результатов поиска
       resultsArray.forEach(function (item) {
         item.parentNode.removeChild(item);
-      });
+      });*/
       
       if (!!(markerHolder)) {
         markerHolder.setOptions({
           icon: {
             url: icons[markerHolder.properties.type].icon,
-            size: new google.maps.Size(30, 55),
-            scaledSize: new google.maps.Size(30, 55)
+            size: markerSize,
+            scaledSize: markerSize
           },
           clickable: true
         });
@@ -362,8 +383,8 @@ function initMap() {
       marker.setOptions({
         icon: {
           url: icons[marker.properties.type + '_sel'].icon,
-          size: new google.maps.Size(30, 55),
-          scaledSize: new google.maps.Size(30, 55)
+          size: markerSize,
+          scaledSize: markerSize
         },
         clickable: false
       });
@@ -371,25 +392,37 @@ function initMap() {
       map.panTo(markerPosition);
       map.setZoom(14);
       map.panBy(0, 50);
-
+      
+      markerHolder = marker;
+      
       contenter(marker, infoContainer);
 
-      markerHolder = marker;
     }
     
     if (!!(marker)) {
-      resultText = '<p class="results__name">' +
-        marker.properties.name.substr(0, matchStart) +
-        '<span class="results__name_query">' +
-          marker.properties.name.substr(matchStart, query.length) +
-        '</span>' +
-        marker.properties.name.substr(matchStart + query.length) +
-        '</p>';
-      resultText += '<p class="results__category">' + marker.properties.category + '</p>';
-      resultText += '<p class="results__address">' + marker.properties.address + '</p>';
-      resultsItem.innerHTML = resultText;
-      resultsItem.addEventListener('click', resultClick);
-      return resultsItem;
+      if (matchStart === 0 && query === '') {
+        
+        resultText = '<p class="results__name">' + marker.properties.name + '</p>' +
+          '<p class="results__category">' + marker.properties.category + '</p>' +
+          '<p class="results__address">' + marker.properties.address + '</p>';
+        resultsItem.innerHTML = resultText;
+        resultsItem.addEventListener('click', resultClick);
+        return resultsItem;
+      } else {
+        resultText = '<p class="results__name">' +
+          marker.properties.name.substr(0, matchStart) +
+          '<span class="results__name_query">' +
+            marker.properties.name.substr(matchStart, query.length) +
+          '</span>' +
+          marker.properties.name.substr(matchStart + query.length) +
+          '</p>';
+        resultText += '<p class="results__category">' + marker.properties.category + '</p>';
+        resultText += '<p class="results__address">' + marker.properties.address + '</p>';
+        resultsItem.innerHTML = resultText;
+        resultsItem.addEventListener('click', resultClick);
+        return resultsItem;
+      }
+      
       
     } else {
       resultsItem.classList.add('results__item_is_passive');
@@ -399,14 +432,11 @@ function initMap() {
 
   }
   
-  centerControlDiv.index = 1;
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+  map.addListener('idle', function () {
+    var infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
+    centerControlDiv.style.bottom = infoHeight + 14 + 'px';
+    trafficViewDiv.style.bottom = infoHeight + 77 + 'px';
 
-  trafficViewDiv.index = 2;
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(trafficViewDiv);
-
-  infoWindow.setOptions({
-    disableAutoPan: true
   });
   
   //обработчик клика по маркеру
@@ -420,8 +450,8 @@ function initMap() {
         markerHolder.setOptions({
           icon: {
             url: icons[markerHolder.properties.type].icon,
-            size: new google.maps.Size(30, 55),
-            scaledSize: new google.maps.Size(30, 55)
+            size: markerSize,
+            scaledSize: markerSize
           },
           clickable: true
         });
@@ -430,19 +460,18 @@ function initMap() {
       marker.setOptions({
         icon: {
           url: icons[marker.properties.type + '_sel'].icon,
-          size: new google.maps.Size(30, 55),
-          scaledSize: new google.maps.Size(30, 55)
+          size: markerSize,
+          scaledSize: markerSize
         },
         clickable: false
       });
 
       map.panTo(markerPosition);
       map.panBy(0, 50);
-
-      contenter(marker, infoContainer);
       
       markerHolder = marker;
-
+      
+      contenter(marker, infoContainer);
     });
   });
   
@@ -450,8 +479,8 @@ function initMap() {
     markerHolder.setOptions({
       icon: {
         url: icons[markerHolder.properties.type].icon,
-        size: new google.maps.Size(30, 55),
-        scaledSize: new google.maps.Size(30, 55)
+        size: markerSize,
+        scaledSize: markerSize
       },
       clickable: true
     });
@@ -487,11 +516,18 @@ function initMap() {
     });
   });
   
+  google.maps.event.addDomListener(searchBar, 'click', function (event) {
+    var searchResults = document.getElementsByClassName('js-search-results')[0],
+      resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
+      query = searchBar.value;
+    if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
+  });
+  
   google.maps.event.addDomListener(searchBar, 'input', function (event) {
     var searchResults = document.getElementsByClassName('js-search-results')[0],
       resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
-      query = searchBar.value,
-      resultsHolder = [];
+      query = searchBar.value;
+      //resultsHolder = [];
     
     if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
     
@@ -514,8 +550,14 @@ function initMap() {
       sendSorted(resultsHolder);
     }
     */
-
-    if (query.length >= 2) {
+    
+    if (query === '*') {
+      markers.forEach(function (marker) {
+        var result = resulter(marker, 0, '', map);
+        searchResults.appendChild(result);
+      });
+      if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
+    } else if (query.length >= 1) {
       
       markers.forEach(function (marker, i) {
         var regQuery = new RegExp(query, 'i'),

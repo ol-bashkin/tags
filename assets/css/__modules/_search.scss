@@ -78,6 +78,12 @@
       font-style: italic;
       color: #999999;
     }
+    &::selection {
+      background: transparent;
+    }
+    &::moz-selection {
+      background: transparent;
+    }
   }
 }
 
@@ -90,7 +96,6 @@
   z-index: -1;
   max-height: 350px;
   overflow: scroll;
-  transition: all 0.2s ease-in-out;
   
   &__item {
     padding: 15px 15px;

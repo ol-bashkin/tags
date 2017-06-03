@@ -813,7 +813,7 @@ var mazdaCenters = {
       },
       "properties": {
         "name": "ДЦ «РОЛЬФ-Химки»",
-        "type": "premium",
+        "type": "partner",
         "category": "Официальный дилер (Mazda)",
         "address": "МО, Химкинский район, г. Химки, Ленинградское шоссе, вл. 21",
         "phone": "+7 (495) 266-5671",
@@ -829,7 +829,7 @@ var mazdaCenters = {
       },
       "properties": {
         "name": "ДЦ «РОЛЬФ-Восток»",
-        "type": "premium",
+        "type": "partner",
         "category": "Официальный дилер (Mazda)",
         "address": "г. Москва, Рязанский проспект, д. 24, к. 3",
         "phone": "+7 (495) 785-8000",
@@ -845,7 +845,7 @@ var mazdaCenters = {
       },
       "properties": {
         "name": "ДЦ «РОЛЬФ-Лахта»",
-        "type": "premium",
+        "type": "partner",
         "category": "Официальный дилер (Mazda)",
         "address": "г. Санкт-Петербург, ул. Савушкина, д. 103Б",
         "phone": "+7 (812) 335-6777",
@@ -861,7 +861,7 @@ var mazdaCenters = {
       },
       "properties": {
         "name": "ДЦ «АвтоСпецЦентр»",
-        "type": "premium",
+        "type": "partner",
         "category": "Официальный дилер (Mazda)",
         "address": "г. Москва, Каширское шоссе, д. 45",
         "phone": "+7 (495) 664-2166",
@@ -877,7 +877,7 @@ var mazdaCenters = {
       },
       "properties": {
         "name": "RMC Insurance",
-        "type": "elite",
+        "type": "partner",
         "category": "Клубный сервис страхования (Все марки)",
         "address": "г. Москва, Зеленый проспект, д. 20",
         "phone": "+7 (495) 518-9418 доб. 2",
