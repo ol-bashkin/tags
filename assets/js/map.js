@@ -578,10 +578,15 @@ function initMap() {
       markers.forEach(function (marker, i) {
         var regQuery = new RegExp(query, 'i'),
           mazdaName = marker.properties.name,
+          mazdaAltName = marker.properties.searchAlt,
           matchPosition = mazdaName.search(regQuery),
+          matchAlt = mazdaAltName.search(regQuery),
           result = '';
         if (matchPosition !== -1) {
           result = resulter(marker, matchPosition, query, map);
+          searchResults.appendChild(result);
+        } else if (matchAlt !== -1) {
+          result = resulter(marker, 0, '', map);
           searchResults.appendChild(result);
         } else if (i === markers.length - 1 && searchResults.childNodes.length === 0) {
           result = resulter();
