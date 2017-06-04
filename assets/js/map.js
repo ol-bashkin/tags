@@ -96,6 +96,15 @@ function initMap() {
       optimized: false,
       map: map
     }),
+    posListening = false,
+    currentPositionListener = currentPositionMarker.addListener('position_changed', function () {
+      console.log('watching');
+      posListening = true;
+      if (currentPositionMarker.getVisible()) {
+        console.log('changed');
+        map.panTo(currentPositionMarker.getPosition());
+      }
+    }),
     serviceDistance = new google.maps.DistanceMatrixService();
   
   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -126,31 +135,33 @@ function initMap() {
     
   }
   
-  function listenPosition() {
-    if (currentPositionMarker.getVisible()) {
-      console.log('changed');
-      map.panTo(currentPositionMarker.getPosition());
-    }
-  }
-  
-  currentPositionMarker.addListener('position_changed', function () {
-    console.log('watching');
-    listenPosition();
-  });
-  
   map.addListener('dragstart', function () {
-    console.log('stop watching');
-    google.maps.event.clearListeners(currentPositionMarker, 'position_changed');
+    console.log('trying to stop ' + posListening);
+    if (posListening) {
+      google.maps.event.removeListener(currentPositionListener);
+      posListening = false;
+      console.log('stop watching');
+    }
+    
   });
   
   map.addListener('idle', function () {
-    window.setTimeout(function () {
-      console.log('continue watching');
-      google.maps.event.clearListeners(currentPositionMarker, 'position_changed');
-      currentPositionMarker.addListener('position_changed', function () {
-        listenPosition();
-      });
-    }, '30000');
+    console.log('trying to start ' + posListening);
+    if (!posListening) {
+      window.setTimeout(function () {
+        if (!posListening) {
+          console.log('continue watching');
+
+          currentPositionListener = currentPositionMarker.addListener('position_changed', function () {
+            if (currentPositionMarker.getVisible()) {
+              console.log('changed');
+              map.panTo(currentPositionMarker.getPosition());
+            }
+          });
+          posListening = true;
+        }
+      }, '30000');
+    }
   });
   
   /* Получение архива расстояний до маркера
