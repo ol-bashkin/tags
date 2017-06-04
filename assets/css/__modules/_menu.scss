@@ -228,6 +228,10 @@
   &__tel {
     font-size: 11px;
     font-weight: 300;
+    &:link, &:visited {
+      text-decoration: none;
+      color: #000;
+    }
   }
 }
 

@@ -6,7 +6,8 @@ var overlay  = document.getElementsByClassName('js-menuOverlay-toggle')[0],
   hamburger  = document.getElementsByClassName('js-hamburger-toggle')[0],
   user       = document.getElementsByClassName('js-user-toggle')[0],
   menuUser   = document.getElementsByClassName('js-menuUser-toggle')[0],
-  menuMain   = document.getElementsByClassName('js-menuMain-toggle');
+  menuMain   = document.getElementsByClassName('js-menuMain-toggle'),
+  menuTel    = document.getElementsByClassName('js-menu-tel')[0];
 
 overlay.addEventListener('click', function () {
   'use strict';
@@ -44,3 +45,10 @@ user.addEventListener('click', function () {
   }
   
 });
+
+menuTel.addEventListener('click', function (event) {
+  "use strict";
+  event.preventDefault();
+});
+
+
