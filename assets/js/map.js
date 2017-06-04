@@ -148,7 +148,7 @@ function initMap() {
       currentPositionMarker.addListener('position_changed', function () {
         listenPosition();
       });
-    }, '60000');
+    }, '10000');
   });
   
   /* Получение архива расстояний до маркера
