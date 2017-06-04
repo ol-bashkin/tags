@@ -136,8 +136,7 @@ function initMap() {
     listenPosition();
   });
   
-  map.addListener('drag_start', function () {
-    console.log('тяг тяг');
+  map.addListener('dragstart', function () {
     google.maps.event.clearListeners(currentPositionMarker, 'position_changed');
   });
   

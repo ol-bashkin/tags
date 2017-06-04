@@ -11,13 +11,16 @@
 <body>
   <header></header>
   <main class="reg">
-    <form action="registrate.php">
+    <form method="POST" action="login.php">
       
-      <label for="reg__tel" class="reg__telLabel">Введите код из СМС</label>
+      <label for="reg__input" class="reg__inputLabel">Введите код из СМС</label>
       <p class="reg__where">
         Авторизационный код был отправлен SMS&#8209;сообщением на&nbsp;номер <strong class="js-phoneNumber">{{{phoneNumber}}}</strong>
       </p>
-      <input type="tel" class="reg__tel js-showErrorBorder" id="reg__tel">
+      <input type="text" class="reg__input reg__input_has_error js-code-input" id="reg__input"
+        autofocus="autofocus" required="required"
+        pattern="[0-9]{3}\s[0-9]{3}"
+        placeholder="___ ___">
       
       <p class="reg__error reg__error_oneString js-showError">Неправильно введен код</p>
       
@@ -29,5 +32,7 @@
       
     </form>
   </main>
+  
+  <script src="../assets/js/code.js"></script>
 </body>
 </html>

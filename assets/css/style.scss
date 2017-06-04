@@ -26,7 +26,7 @@ html, body {
   overflow: hidden;
 }
 
-header {
+.header__logo {
   height: 25%;
   background-color: $primary-gray;
   background-image: url(../img/tag_logo.svg);
@@ -85,5 +85,5 @@ header {
 @import '__modules/reg';
 @import '__modules/search';
 @import '__modules/infowindow';
-
+@import '__modules/header';
   
