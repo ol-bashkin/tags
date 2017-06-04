@@ -84,6 +84,7 @@ function initMap() {
     markerHolder = '',
     searchBar = document.getElementsByClassName('js-search-bar')[0],
     searchClear = document.getElementsByClassName('js-search-clear')[0],
+    searchResults = document.getElementsByClassName('js-search-results')[0],
     currentPosition = false,
     currentPositionMarker = new google.maps.Marker({
       icon: {
@@ -136,7 +137,7 @@ function initMap() {
   }
   
   map.addListener('dragstart', function () {
-    console.log('trying to stop ' + posListening);
+    console.log('trying to stop: ' + posListening);
     if (posListening) {
       google.maps.event.removeListener(currentPositionListener);
       posListening = false;
@@ -146,11 +147,14 @@ function initMap() {
   });
   
   map.addListener('idle', function () {
-    console.log('trying to start ' + posListening);
-    if (!posListening) {
+    console.log('trying to start: ' + !posListening);
+    if (!posListening && searchResults.classList.contains('results_is_hidden') && !infoContainer.classList.contains('c-infowindow_is_visible')) {
+      console.log('starting');
       window.setTimeout(function () {
-        if (!posListening) {
+        if (!posListening && searchResults.classList.contains('results_is_hidden') && !infoContainer.classList.contains('c-infowindow_is_visible')) {
           console.log('continue watching');
+          
+          map.panTo(currentPositionMarker.getPosition());
 
           currentPositionListener = currentPositionMarker.addListener('position_changed', function () {
             if (currentPositionMarker.getVisible()) {
@@ -352,6 +356,7 @@ function initMap() {
     infoClose.classList.add('infowindow__close', 'js-infowindow-close');
     
     infoClose.addEventListener('click', function () {
+      google.maps.event.trigger(map, 'idle');
       closeInfo();
     });
     
@@ -504,6 +509,10 @@ function initMap() {
   markers.forEach(function (marker) {
     marker.addListener('click', function (event) {
       
+      google.maps.event.removeListener(currentPositionListener);
+      posListening = false;
+      console.log('marker_clicked');
+      
       if (!!(markerHolder)) {
         markerHolder.setOptions({
           icon: {
@@ -541,6 +550,7 @@ function initMap() {
     var resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
       searchResults = document.getElementsByClassName('js-search-results')[0];
     searchBar.value = '';
+    google.maps.event.trigger(map, 'idle');
     if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
     resultsArray.forEach(function (item) {
       item.parentNode.removeChild(item);
@@ -551,7 +561,12 @@ function initMap() {
     var searchResults = document.getElementsByClassName('js-search-results')[0],
       resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
       query = searchBar.value;
-    searchBar.selectionStart = query.length;
+    searchBar.selectionStart = query.length;    
+    if (query.length >= 1) {
+      console.log('searchebar clicked: ' + posListening);
+      google.maps.event.removeListener(currentPositionListener);
+      posListening = false;
+    }
     closeInfo();
     if (searchResults.classList.contains('results_is_hidden')) { searchResults.classList.remove('results_is_hidden'); }
   });
@@ -561,6 +576,9 @@ function initMap() {
       resultsArray = Array.prototype.slice.call(document.getElementsByClassName('results__item')),
       query = searchBar.value;
       //resultsHolder = [];
+    console.log('searchebar inputed: ' + posListening);
+    google.maps.event.removeListener(currentPositionListener);
+    posListening = false;
     if (!(searchResults.classList.contains('results_is_hidden'))) { searchResults.classList.add('results_is_hidden'); }
     
     resultsArray.forEach(function (item) {
