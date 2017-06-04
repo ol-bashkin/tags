@@ -6,7 +6,6 @@
 <title>Untitled Document</title>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
-<script src="../assets/js/services.js"></script>
 </head>
 
 <body>
@@ -30,7 +29,7 @@
         <li class="menu__item"><a href="getdiscount.html" class="menu__link menu__link_card">Получить скидку</a></li>
         <li class="menu__item"><a href="transactions.html" class="menu__link menu__link_bonus">Посмотреть транзакции</a></li>
         <li class="menu__item"><a href="sendbonuses.html" class="menu__link menu__link_move">Перечислить бонусы</a></li>
-        <li class="menu__item"><a href="invitepartner.html" class="menu__link menu__link_partner">Пригласить партнера</a></li>
+        <li class="menu__item menu__item_is_passive"><p class="menu__link menu__link_partner">Пригласить партнера</p></li>
         <li class="menu__item"><a href="invitefriend.html" class="menu__link menu__link_friend">Пригласить друга</a></li>
       </ul>
       <ul class="menu__list menu__list_bottom js-menuMain-toggle">
@@ -40,44 +39,20 @@
     </nav>
   </aside>
   
-  <div class="c-search">
-    <div class="search">
-      <div class="search__hamburger js-hamburger-toggle"></div>
-      <input type="text" class="search__text js-search-bar" placeholder="Поиск партнёров">
-      <div class="search__clear js-search-clear"></div>
+  <header class="c-header">
+    <div class="header">
+      <div class="header__hamburger js-hamburger-toggle"></div>
+      <h1 class="header__title">Пригласить партнера</h1>
+      <a href="map.html" class="header__back"></a>
     </div>
-    <div class="results results_is_hidden js-search-results"></div>
-  </div>
+  </header>
   
-  
-  <main class="map" id="map">
-    
-  </main>
-  
-  <div class="c-infowindow c-infowindow_is_hidden js-infowindow">
-    
-  </div>
-  
-  <script src="../assets/js/markerclusterer.js"></script>
-  
-  <script src="../assets/js/map.js"></script>
+  <main class="c-placeholder">
+   
+  </main> 
   
   <script src="../assets/js/main.js"></script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVVH_sNL6bjByqSGCJogNH65U_CVDkSiI&callback=initMap">
-  </script>
-  <div class="svgFilter">
-    <svg width="0" height="0" viewBox="0 0 0 0" preserveAspectRatio="none"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink">
-      <filter id="colorMeMatrix">
-        <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 .01
-                                                                0 1 0 0 .03
-                                                                0 0 1 0 .05
-                                                                0 0 0 1 0" />
-      </filter>
-    </svg>
-  </div>
+  <script src="../assets/js/transactions.js"></script>
   
 </body>
 </html>

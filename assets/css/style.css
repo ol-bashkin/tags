@@ -10,7 +10,8 @@ html, body {
   position: absolute;
   height: 100%;
   width: 100%;
-  overflow: hidden; }
+  overflow: hidden;
+  font-size: 0; }
 
 .header__logo {
   height: 25%;
@@ -697,6 +698,7 @@ html, body {
       .transactions__item_is_charge .transactions__value:after {
         color: #000; }
   .transactions__item_is_last {
+    margin-top: 15px;
     border-top: 1px solid #e5e5e5; }
 .transactions__caption {
   font-family: "Roboto", sans-serif;
@@ -755,5 +757,14 @@ html, body {
   font-style: italic;
   color: #999999;
   text-align: center; }
+
+.c-placeholder {
+  box-sizing: border-box;
+  height: 100%;
+  padding-top: 60px;
+  background-color: #eef1f3;
+  background-image: url(../img/tag_logo.svg);
+  background-repeat: no-repeat;
+  background-position: center; }
 
 /*# sourceMappingURL=style.css.map */

@@ -24,6 +24,7 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  font-size: 0;
 }
 
 .header__logo {
@@ -87,3 +88,4 @@ html, body {
 @import '__modules/infowindow';
 @import '__modules/header';
 @import '__modules/transactions';
+@import '__modules/sendbonuses';
