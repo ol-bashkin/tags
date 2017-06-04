@@ -495,7 +495,12 @@ function initMap() {
 
   }
   
-  
+  map.addListener('zoom', function () {
+    var infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);
+    centerControlDiv.style.bottom = infoHeight + 14 + 'px';
+    trafficViewDiv.style.bottom = infoHeight + 77 + 'px';
+
+  });
   
   map.addListener('idle', function () {
     var infoHeight = parseInt(window.getComputedStyle(infoContainer, null).getPropertyValue("height"), 10);

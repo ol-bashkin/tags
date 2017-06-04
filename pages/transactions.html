@@ -27,7 +27,7 @@
       </ul>
       <ul class="menu__list js-menuMain-toggle">
         <li class="menu__item"><a href="#" class="menu__link menu__link_card">Получить скидку</a></li>
-        <li class="menu__item menu__item_is_passive"><a href="transactions.html" class="menu__link menu__link_bonus">Посмотреть транзакции</a></li>
+        <li class="menu__item menu__item_is_passive"><p class="menu__link menu__link_bonus">Посмотреть транзакции</p></li>
         <li class="menu__item"><a href="#" class="menu__link menu__link_move">Перечислить бонусы</a></li>
         <li class="menu__item"><a href="#" class="menu__link menu__link_partner">Пригласить партнера</a></li>
         <li class="menu__item"><a href="#" class="menu__link menu__link_friend">Пригласить друга</a></li>
@@ -49,53 +49,71 @@
   
   <main class="c-transactions">
    <ul class="transactions">
-     <li class="transactions__item">
-       <figure class="transactions__icon"></figure>
-       <p class="transactions__caption"></p>
-       <p class="transactions__value"></p>
-       <p class="transactions__category"></p>
-       <p class="transactions__date"></p>
+     <li class="transactions__item transactions__item_is_acquisition js-trans-item">
+       <p class="transactions__caption js-trans-caption">Установочный центр Автомобильных операций Mazda и еще что-нибудь очень длинное</p>
+       <p class="transactions__value js-trans-value">+150 000</p>
+       <p class="transactions__category">Начисление</p>
+       <p class="transactions__date">Вчера, 13:14:12</p>
      </li>
-     <li class="transactions__item">
-       <figure class="transactions__icon"></figure>
-       <p class="transactions__caption"></p>
-       <p class="transactions__value"></p>
-       <p class="transactions__category"></p>
-       <p class="transactions__date"></p>
+     <li class="transactions__item transactions__item_is_acquisition js-trans-item">
+       <p class="transactions__caption js-trans-caption">Установочный центр Автомобильных операций Mazda и еще что-нибудь очень длинное</p>
+       <p class="transactions__value js-trans-value">+2 000</p>
+       <p class="transactions__category">Начисление</p>
+       <p class="transactions__date">Вчера, 13:14:12</p>
      </li>
-     <li class="transactions__item">
-       <figure class="transactions__icon"></figure>
-       <p class="transactions__caption"></p>
-       <p class="transactions__value"></p>
-       <p class="transactions__category"></p>
-       <p class="transactions__date"></p>
+     <li class="transactions__item transactions__item_is_friend js-trans-item">
+       <p class="transactions__caption js-trans-caption">Савельев П.М.</p>
+       <p class="transactions__value js-trans-value">+2 000</p>
+       <p class="transactions__category">Начисление по карте друга</p>
+       <p class="transactions__date">12 декабря 13:14:12</p>
      </li>
-     <li class="transactions__item">
-       <figure class="transactions__icon"></figure>
-       <p class="transactions__caption"></p>
-       <p class="transactions__value"></p>
-       <p class="transactions__category"></p>
-       <p class="transactions__date"></p>
+     <li class="transactions__item transactions__item_is_partner js-trans-item">
+       <p class="transactions__caption js-trans-caption">Сервисный центр Mazda</p>
+       <p class="transactions__value js-trans-value">+700</p>
+       <p class="transactions__category">Начисление у привлеченного партнера</p>
+       <p class="transactions__date">3 декабря 15:45:43</p>
      </li>
-     <li class="transactions__item">
-       <figure class="transactions__icon"></figure>
-       <p class="transactions__caption"></p>
-       <p class="transactions__value"></p>
-       <p class="transactions__category"></p>
-       <p class="transactions__date"></p>
+     <li class="transactions__item transactions__item_is_charge js-trans-item">
+       <p class="transactions__caption js-trans-caption">Сервисный центр Mazda</p>
+       <p class="transactions__value js-trans-value">&minus;1 500</p>
+       <p class="transactions__category">Списание</p>
+       <p class="transactions__date">45 минут назад</p>
+     </li>
+     <li class="transactions__item transactions__item_is_acquisition js-trans-item">
+       <p class="transactions__caption js-trans-caption">Установочный центр Автомобильных операций Mazda и еще что-нибудь очень длинное</p>
+       <p class="transactions__value js-trans-value">+2 000</p>
+       <p class="transactions__category">Начисление</p>
+       <p class="transactions__date">Вчера, 13:14:12</p>
+     </li>
+     <li class="transactions__item transactions__item_is_friend js-trans-item">
+       <p class="transactions__caption js-trans-caption">Савельев П.М.</p>
+       <p class="transactions__value js-trans-value">+2 000</p>
+       <p class="transactions__category">Начисление по карте друга</p>
+       <p class="transactions__date">12 декабря 13:14:12</p>
+     </li>
+     <li class="transactions__item transactions__item_is_partner js-trans-item">
+       <p class="transactions__caption js-trans-caption">Сервисный центр Mazda</p>
+       <p class="transactions__value js-trans-value">+700</p>
+       <p class="transactions__category">Начисление у привлеченного партнера</p>
+       <p class="transactions__date">3 декабря 15:45:43</p>
+     </li>
+     <li class="transactions__item transactions__item_is_charge js-trans-item">
+       <p class="transactions__caption js-trans-caption">Сервисный центр Mazda</p>
+       <p class="transactions__value js-trans-value">&minus;1 500</p>
+       <p class="transactions__category">Списание</p>
+       <p class="transactions__date">45 минут назад</p>
      </li>
      <li class="transactions__item transactions__item_is_last">
-       <figure class="transactions__icon"></figure>
-       <p class="transactions__caption"></p>
-       <p class="transactions__value"></p>
-       <p class="transactions__category"></p>
-       <p class="transactions__date"></p>
+       <p class="transactions__end">
+         Больше нет операций
+       </p>
      </li>
    </ul>
     
   </main> 
   
   <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/transactions.js"></script>
   
 </body>
 </html>

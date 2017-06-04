@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* CSS Document */
 * {
   margin: 0;
@@ -669,5 +670,90 @@ html, body {
     top: 6px; }
     .header__back:hover {
       cursor: pointer; }
+
+.c-transactions {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  padding-top: 60px;
+  overflow: scroll; }
+
+.transactions__item {
+  padding: 15px 20px;
+  font-size: 0;
+  background-size: 40px 40px;
+  background-repeat: no-repeat;
+  background-position: 20px 50%; }
+  .transactions__item_is_acquisition {
+    background-image: url(../img/__transactions_icons/acquisition.svg); }
+  .transactions__item_is_friend {
+    background-image: url(../img/__transactions_icons/friend.svg); }
+  .transactions__item_is_partner {
+    background-image: url(../img/__transactions_icons/partner.svg); }
+  .transactions__item_is_charge {
+    background-image: url(../img/__transactions_icons/charge.svg); }
+    .transactions__item_is_charge .transactions__value {
+      color: #000; }
+      .transactions__item_is_charge .transactions__value:after {
+        color: #000; }
+  .transactions__item_is_last {
+    border-top: 1px solid #e5e5e5; }
+.transactions__caption {
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 14px;
+  width: 160px;
+  margin-left: 52px;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: top; }
+.transactions__value {
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 14px;
+  color: #459bfe;
+  box-sizing: border-box;
+  float: right;
+  vertical-align: top;
+  text-align: right;
+  padding-right: 10px; }
+  .transactions__value:after {
+    content: '₽';
+    display: block;
+    position: relative;
+    font-family: "Roboto", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 14px;
+    color: #459bfe;
+    right: -10px;
+    top: -14px; }
+.transactions__category {
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 14px;
+  margin-bottom: 5px;
+  margin-left: 52px; }
+.transactions__date {
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 14px;
+  margin-left: 52px; }
+.transactions__end {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+  font-style: italic;
+  color: #999999;
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */
