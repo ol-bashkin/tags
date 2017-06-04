@@ -1,0 +1,109 @@
+$d: getDiscount;
+
+.c-#{$d} {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  padding-top: 60px;
+  overflow: hidden;
+  position: absolute;
+}
+
+.#{$d} {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+  height: 100%;
+  padding: 0 20px;
+  
+  &__qrcode {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 30px;
+  }
+  &__base {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0;
+    width: 100%;
+    height: 36px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 20px;
+    
+    &Caption {
+      @include roboto(14px, 500, 36px);
+    }
+    &Value {
+      @include roboto(24px, 500, 36px);
+      padding-right: 13px;
+      height: 36px;
+      
+      &:after {
+        content: '%';
+        display: block;
+        position: relative;
+        @include roboto(14px, 500, 36px);
+        right: -15px;
+        top: -32px;
+      }
+    }
+  }
+  
+  &__add {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0;
+    width: 100%;
+    height: 16px;
+    margin-bottom: 40px;
+    
+    &Caption {
+      @include roboto(11px, 300, 16px);
+    }
+    &Value {
+      @include roboto(14px, 400, 16px);
+    }
+  }
+  
+  &__bonus {
+    @include roboto(11px, 300, 14px);
+    padding-left: 21px;
+    
+    &Value {
+      @include roboto(14px, 500, 14px);
+    }
+    
+    &:before {
+        content: '+';
+        display: block;
+        position: absolute;
+        left: 20px;
+        @include roboto(11px, 500, 10px);
+        color: $primary-color;
+        text-align: center;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid $primary-color;
+      }
+  }
+}

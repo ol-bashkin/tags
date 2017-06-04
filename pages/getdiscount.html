@@ -26,7 +26,7 @@
         <li class="menu__item"><a href="../index.html" class="menu__link menu__link_exit">Выйти</a></li>
       </ul>
       <ul class="menu__list js-menuMain-toggle">
-        <li class="menu__item"><a href="getdiscount.html" class="menu__link menu__link_card">Получить скидку</a></li>
+        <li class="menu__item menu__item_is_passive"><p class="menu__link menu__link_card">Получить скидку</p></li>
         <li class="menu__item"><a href="transactions.html" class="menu__link menu__link_bonus">Посмотреть транзакции</a></li>
         <li class="menu__item"><a href="sendbonuses.html" class="menu__link menu__link_move">Перечислить бонусы</a></li>
         <li class="menu__item"><a href="invitepartner.html" class="menu__link menu__link_partner">Пригласить партнера</a></li>
@@ -34,21 +34,33 @@
       </ul>
       <ul class="menu__list menu__list_bottom js-menuMain-toggle">
         <li class="menu__item"><a href="help.html" class="menu__link menu__link_help">Помощь</a></li>
-        <li class="menu__item menu__item_is_passive"><p class="menu__link menu__link_about">О проекте</p></li>
+        <li class="menu__item"><p class="menu__link menu__link_about">О проекте</p></li>
       </ul>
     </nav>
   </aside>
   
   <header class="c-header">
-    <div class="header">
+    <div class="header header_has_subtitle">
       <div class="header__hamburger js-hamburger-toggle"></div>
-      <h1 class="header__title">О проекте</h1>
+      <h1 class="header__title header__title_has_subtitle">Получить скидку</h1>
+      <p class="header__subtitle">СЦ Автомимидж</p>
       <a href="map.html" class="header__back"></a>
     </div>
   </header>
   
-  <main class="c-placeholder">
-   
+  <main class="c-getDiscount">
+    <div class="getDiscount">
+      <img class="getDiscount__qrcode" src="../assets/img/__discount/qrcode.png" alt="QR-код для получения скидки">
+      <div class="getDiscount__base">
+        <p class="getDiscount__baseCaption">Базовая скидка</p>
+        <p class="getDiscount__baseValue">5</p>
+      </div>
+      <div class="getDiscount__add">
+        <p class="getDiscount__addCaption">Дополнительная скидка</p>
+        <p class="getDiscount__addValue">до 3%</p>
+      </div>
+      <p class="getDiscount__bonus"><span class="getDiscount__bonusValue">1%</span> от стоимости покупки будет возращен на счет в виде бонусов</p>
+    </div>
   </main> 
   
   <script src="../assets/js/main.js"></script>

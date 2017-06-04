@@ -31,6 +31,9 @@
   &__title {
     @include roboto(14px, 400, 48px);
     text-align: center;
+    &_has_subtitle {
+      line-height: 14px;
+    }
   }
   
   &__back {
@@ -47,5 +50,19 @@
     &:hover {
       cursor: pointer;
     }
+  }
+  &_has_subtitle {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+  }
+  &__subtitle {
+    @include roboto(11px, 300, 14px);
+    text-align: center;
   }
 }

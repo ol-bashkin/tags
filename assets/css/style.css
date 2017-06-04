@@ -658,6 +658,8 @@ html, body {
     font-weight: 400;
     line-height: 48px;
     text-align: center; }
+    .header__title_has_subtitle {
+      line-height: 14px; }
   .header__back {
     position: absolute;
     width: 48px;
@@ -671,6 +673,21 @@ html, body {
     top: 6px; }
     .header__back:hover {
       cursor: pointer; }
+  .header_has_subtitle {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center; }
+  .header__subtitle {
+    font-family: "Roboto", sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 14px;
+    text-align: center; }
 
 .c-transactions {
   box-sizing: border-box;
@@ -766,5 +783,116 @@ html, body {
   background-image: url(../img/tag_logo.svg);
   background-repeat: no-repeat;
   background-position: center; }
+
+.c-getDiscount {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  padding-top: 60px;
+  overflow: hidden;
+  position: absolute; }
+
+.getDiscount {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+  height: 100%;
+  padding: 0 20px; }
+  .getDiscount__qrcode {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 30px; }
+  .getDiscount__base {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0;
+    width: 100%;
+    height: 36px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 20px; }
+    .getDiscount__baseCaption {
+      font-family: "Roboto", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 36px; }
+    .getDiscount__baseValue {
+      font-family: "Roboto", sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 36px;
+      padding-right: 13px;
+      height: 36px; }
+      .getDiscount__baseValue:after {
+        content: '%';
+        display: block;
+        position: relative;
+        font-family: "Roboto", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 36px;
+        right: -15px;
+        top: -32px; }
+  .getDiscount__add {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0;
+    width: 100%;
+    height: 16px;
+    margin-bottom: 40px; }
+    .getDiscount__addCaption {
+      font-family: "Roboto", sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 16px; }
+    .getDiscount__addValue {
+      font-family: "Roboto", sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 16px; }
+  .getDiscount__bonus {
+    font-family: "Roboto", sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 14px;
+    padding-left: 21px; }
+    .getDiscount__bonusValue {
+      font-family: "Roboto", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 14px; }
+    .getDiscount__bonus:before {
+      content: '+';
+      display: block;
+      position: absolute;
+      left: 20px;
+      font-family: "Roboto", sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 10px;
+      color: #459bfe;
+      text-align: center;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid #459bfe; }
 
 /*# sourceMappingURL=style.css.map */
