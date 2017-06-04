@@ -128,11 +128,13 @@ function initMap() {
   
   function listenPosition() {
     if (currentPositionMarker.getVisible()) {
+      console.log('changed');
       map.panTo(currentPositionMarker.getPosition());
     }
   }
   
   currentPositionMarker.addListener('position_changed', function () {
+    console.log('watching');
     listenPosition();
   });
   
@@ -146,7 +148,7 @@ function initMap() {
       currentPositionMarker.addListener('position_changed', function () {
         listenPosition();
       });
-    }, '1800000');
+    }, '60000');
   });
   
   /* Получение архива расстояний до маркера

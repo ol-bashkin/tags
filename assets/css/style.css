@@ -125,6 +125,12 @@ html, body {
     -webkit-tap-highlight-color: rgba(119, 120, 121, 0.15); }
     .menu__item:active {
       background-color: #eef1f3; }
+    .menu__item_is_passive {
+      -webkit-tap-highlight-color: transparent; }
+      .menu__item_is_passive:active {
+        background-color: transparent; }
+      .menu__item_is_passive .menu__link {
+        color: #a5a5a5; }
   .menu__link {
     position: relative;
     display: block;
@@ -198,10 +204,9 @@ html, body {
         background-position: -63px 0px; }
   .menu__tel {
     font-size: 11px;
-    font-weight: 300;
-    -webkit-tap-highlight-color: rgba(119, 120, 121, 0.15); }
+    font-weight: 300; }
     .menu__tel a {
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color: rgba(119, 120, 121, 0.15);
       text-decoration: none;
       color: #000; }
       .menu__tel a:visited {
