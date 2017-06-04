@@ -116,7 +116,7 @@ function initMap() {
       handleLocationError(true, infoWindow, map.getCenter());
     }, {
       enableHighAccuracy: true,
-      timeout: 60000,
+      timeout: 30000,
       maximumAge: 0
     });
     
@@ -139,16 +139,18 @@ function initMap() {
   });
   
   map.addListener('dragstart', function () {
+    console.log('stop watching');
     google.maps.event.clearListeners(currentPositionMarker, 'position_changed');
   });
   
   map.addListener('idle', function () {
     window.setTimeout(function () {
+      console.log('continue watching');
       google.maps.event.clearListeners(currentPositionMarker, 'position_changed');
       currentPositionMarker.addListener('position_changed', function () {
         listenPosition();
       });
-    }, '10000');
+    }, '30000');
   });
   
   /* Получение архива расстояний до маркера
