@@ -682,6 +682,8 @@ html, body {
     flex-wrap: nowrap;
     flex-direction: column;
     justify-content: center; }
+  .header_has_no_shadow {
+    box-shadow: none; }
   .header__subtitle {
     font-family: "Roboto", sans-serif;
     font-size: 11px;
@@ -894,5 +896,79 @@ html, body {
       height: 10px;
       border-radius: 50%;
       border: 1px solid #459bfe; }
+
+.c-discountConfirm {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute; }
+
+.discountConfirm {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+  height: 100%;
+  padding: 0 20px; }
+  .discountConfirm__icon {
+    width: 125px;
+    height: 101px;
+    margin-bottom: 30px; }
+  .discountConfirm__caption {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    text-align: center;
+    margin-bottom: 10px; }
+  .discountConfirm__text {
+    margin: 0 20px 30px;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 14px; }
+    .discountConfirm__textSelection {
+      font-weight: 500; }
+  .discountConfirm__frame {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #459bfe;
+    border-radius: 4px;
+    padding: 10px 0 8px 0;
+    box-shadow: 0 2px 8px rgba(69, 155, 254, 0.15); }
+    .discountConfirm__frameCaption {
+      font-family: "Roboto", sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 14px;
+      text-align: center; }
+    .discountConfirm__frameValue {
+      font-family: "Roboto", sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 28px;
+      text-align: center; }
+      .discountConfirm__frameValue:after {
+        content: '₽';
+        display: inline-block;
+        position: relative;
+        font-family: "Roboto", sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 14px;
+        color: #000;
+        text-align: center;
+        width: 10px;
+        height: 10px;
+        vertical-align: top;
+        margin-top: 4px; }
 
 /*# sourceMappingURL=style.css.map */

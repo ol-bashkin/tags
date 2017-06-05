@@ -1,0 +1,79 @@
+$d: discountConfirm;
+
+.c-#{$d} {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  //padding-top: 60px;
+  overflow: hidden;
+  position: absolute;
+}
+
+.#{$d} {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+  height: 100%;
+  padding: 0 20px;
+  
+  &__icon {
+    width: 125px;
+    height: 101px;
+    margin-bottom: 30px;
+  }
+  
+  &__caption {
+    @include roboto(14px, 500, 16px);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  &__text {
+    margin: 0 20px 30px;
+    text-align: center;
+    @include roboto(11px, 300, 14px);
+    &Selection {
+      font-weight: 500;
+    }
+  }
+  
+  &__frame {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid $primary-color;
+    border-radius: 4px;
+    padding: 10px 0 8px 0;
+    box-shadow: 0 2px 8px rgba(69, 155, 254, 0.15);
+    
+    &Caption {
+      @include roboto(11px, 500, 14px);
+      text-align: center;
+    }
+    
+    &Value {
+      @include roboto(24px, 500, 28px);
+      text-align: center;
+      &:after {
+        content: '₽';
+        display: inline-block;
+        position: relative;
+        @include roboto(11px, 500, 14px);
+        color: #000;
+        text-align: center;
+        width: 10px;
+        height: 10px;
+        vertical-align: top;
+        margin-top: 4px;
+      }
+    }
+    
+    
+  }
+}

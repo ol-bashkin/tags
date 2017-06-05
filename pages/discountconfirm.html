@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Untitled Document</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+ 
+  <aside class="c-menu">
+    <div class="c-menu__overlay c-menu__overlay_hidden js-menuOverlay-toggle"></div>
+    <nav class="menu menu_hidden js-menu-toggle">
+      <ul class="menu__list menu__list_top">
+        <li class="menu__item">
+          <p href="#" class="menu__link menu__link_user js-user-toggle">
+            Александр Всехвальнов<br>
+            <span class="menu__tel js-menu-tel">+7 905 378 12 45</span>
+          </p>
+        </li>
+      </ul>
+      <ul class="menu__list menu__list_user menu__list_user_hidden js-menuUser-toggle">
+        <li class="menu__item"><a href="personal.html" class="menu__link menu__link_edit">Изменить данные</a></li>
+        <li class="menu__item"><a href="../index.html" class="menu__link menu__link_exit">Выйти</a></li>
+      </ul>
+      <ul class="menu__list js-menuMain-toggle">
+        <li class="menu__item menu__item_is_passive"><p class="menu__link menu__link_card">Получить скидку</p></li>
+        <li class="menu__item"><a href="transactions.html" class="menu__link menu__link_bonus">Посмотреть транзакции</a></li>
+        <li class="menu__item"><a href="sendbonuses.html" class="menu__link menu__link_move">Перечислить бонусы</a></li>
+        <li class="menu__item"><a href="invitepartner.html" class="menu__link menu__link_partner">Пригласить партнера</a></li>
+        <li class="menu__item"><a href="invitefriend.html" class="menu__link menu__link_friend">Пригласить друга</a></li>
+      </ul>
+      <ul class="menu__list menu__list_bottom js-menuMain-toggle">
+        <li class="menu__item"><a href="help.html" class="menu__link menu__link_help">Помощь</a></li>
+        <li class="menu__item"><p class="menu__link menu__link_about">О проекте</p></li>
+      </ul>
+    </nav>
+  </aside>
+  
+  <header class="c-header">
+    <div class="header header_has_no_shadow">
+      <div class="header__hamburger js-hamburger-toggle"></div>
+      <a href="getdiscount.html" class="header__back"></a>
+    </div>
+  </header>
+  
+  <main class="c-discountConfirm">
+    <div class="discountConfirm">
+      <img class="discountConfirm__icon" src="../assets/img/__discount/icon.png" alt="Ура!">
+      <p class="discountConfirm__caption">Ваша скидка 8%</p>
+      <p class="discountConfirm__text">За данную покупку вам будет начислено <span class="discountConfirm__textSelection">20&nbsp;баллов</span> на ваш бонусный счет</p>
+      <div class="discountConfirm__frame">
+        <p class="discountConfirm__frameCaption">Итоговая стоимость</p>
+        <p class="discountConfirm__frameValue">920</p>
+      </div>
+    </div>
+  </main> 
+  
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/transactions.js"></script>
+  
+</body>
+</html>
