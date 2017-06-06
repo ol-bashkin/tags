@@ -27,7 +27,7 @@ phoneInput.addEventListener('click', function (e) {
       return proxy.charAt(0) === "" && pos === 1 ? 7 : proxy.charAt(i++) || "_";
     });
   
-  if (errorMsg.classList.contains('reg__error_is_visible')) {
+  if (errorMsg.classList.contains('reg__error_is_visible') && input.classList.contains('reg__input_has_error')) {
     errorMsg.classList.remove('reg__error_is_visible');
     input.classList.remove('reg__input_has_error');
   }
@@ -52,8 +52,6 @@ phoneInput.addEventListener('input', function (e) {
     }),
     isBack = input.value.length - result.length < 0 ? 0 : 1,
     shift = result.charAt(curPos) === " " ? isBack : 0;
-  
-  console.log(isBack);
 
   curPos = curPos <= result.replace(/\s_|_/g, "").length ? curPos + shift : result.replace(/_\s|_/g, "").length;
   
@@ -72,47 +70,3 @@ phoneInput.addEventListener('blur', function (e) {
     input.placeholder = "+7 ___ ___ __ __";
   }
 });
-
-/*
-phoneInput.addEventListener('input', function (e) {
-  'use strict';
-  var errorMsg = document.getElementsByClassName('js-error')[0],
-    input = e.target,
-    proxy = input.value.replace(/\D/g, ""),
-    pattern = '_ ___ ___ __ __';
-  
-  
-  
-  
-  
-});
-
-*/
-
-
-
-/*
-
-
-function mask(e) {
-  var matrix = this.placeholder,
-    i = 0,
-    def = matrix.replace(/\D/g, ""),
-    val = this.value.replace(/\D/g, "");
-  def.length >= val.length && (val = def);
-  matrix = matrix.replace(/[_\d]/g, function (a) {
-    return val.charAt(i++) || "_";
-  });
-  this.value = matrix;
-  i = matrix.lastIndexOf(val.substr(-1));
-  i < matrix.length && matrix !== this.placeholder ? i++ : i = matrix.indexOf("_");
-  setCursorPosition(i, this);
-}
-
-window.addEventListener("DOMContentLoaded", function () {
-  var input = document.getElementsByClassName('js-tel-input')[0];
-  input.addEventListener("input", mask, false);
-  input.focus();
-  setCursorPosition(2, input);
-});
-*/
