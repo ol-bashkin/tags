@@ -17,38 +17,54 @@ function setCursorPosition(pos1, pos2, e) {
 phoneInput.addEventListener('click', function (e) {
   "use strict";
   var input = e.target,
-    proxy = input.value.replace(/\D/g, "").substr(0, 11),
+    errorMsg = document.getElementsByClassName('js-error')[0],
+    proxy = input.value.replace(/\D/g, ""),
     curPos = input.selectionStart,
     curPosEnd = input.selectionEnd,
     pattern = "+_ ___ ___ __ __",
     i = 0,
-    result = pattern.replace(/_/g, function () {
-      return proxy.charAt(i++) || "_";
+    result = pattern.replace(/_/g, function (match, pos) {
+      return proxy.charAt(0) === "" && pos === 1 ? 7 : proxy.charAt(i++) || "_";
     });
+  
+  if (errorMsg.classList.contains('reg__error_is_visible')) {
+    errorMsg.classList.remove('reg__error_is_visible');
+    input.classList.remove('reg__input_has_error');
+  }
+  
   input.placeholder = "";
   input.value = result;
-  
-  curPos === 0 ? setCursorPosition(1, curPosEnd, input) : setCursorPosition(curPos, curPosEnd, input);
+  curPos = curPos > result.replace(/\s_|_/g, "").length ? result.replace(/\s_|_/g, "").length : curPos;
+  curPosEnd = curPosEnd > result.replace(/\s_|_/g, "").length ? result.replace(/\s_|_/g, "").length : curPosEnd;
+  curPos === 0 ? setCursorPosition(3, 3, input) : setCursorPosition(curPos, curPosEnd, input);
   
 });
 
 phoneInput.addEventListener('input', function (e) {
   "use strict";
   var input = e.target,
-    proxy = input.value.replace(/\D/g, ""),//.substr(0, 11),
+    proxy = input.value.replace(/\D/g, ""),
+    curPos = input.selectionStart,
     pattern = "+_ ___ ___ __ __",
     i = 0,
     result = pattern.replace(/_/g, function () {
       return proxy.charAt(i++) || "_";
-    });
+    }),
+    isBack = input.value.length - result.length < 0 ? 0 : 1,
+    shift = result.charAt(curPos) === " " ? isBack : 0;
+  
+  console.log(isBack);
+
+  curPos = curPos <= result.replace(/\s_|_/g, "").length ? curPos + shift : result.replace(/_\s|_/g, "").length;
   
   input.value = result;
   
-  setCursorPosition(result.replace(/_\s|_/g, "").length, result.replace(/_\s|_/g, "").length, input);
+  input.value === "+_ ___ ___ __ __" ? setCursorPosition(1, 1, input) : setCursorPosition(curPos, curPos, input);
   
 });
 
 phoneInput.addEventListener('blur', function (e) {
+  "use strict";
   var input = e.target,
     proxy = input.value.replace(/\D/g, "");
   if (proxy === '') {
@@ -67,10 +83,7 @@ phoneInput.addEventListener('input', function (e) {
   
   
   
-  if (errorMsg.classList.contains('reg__error_is_visible') && input.value.length !== 0 && input.classList.contains('reg__input_has_error')) {
-    errorMsg.classList.remove('reg__error_is_visible');
-    input.classList.remove('reg__input_has_error');
-  }
+  
   
 });
 
