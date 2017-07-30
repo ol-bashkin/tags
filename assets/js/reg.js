@@ -27,10 +27,13 @@ phoneInput.addEventListener('click', function (e) {
       return proxy.charAt(0) === "" && pos === 1 ? 7 : proxy.charAt(i++) || "_";
     });
   
-  if (errorMsg.classList.contains('reg__error_is_visible') && input.classList.contains('reg__input_has_error')) {
-    errorMsg.classList.remove('reg__error_is_visible');
-    input.classList.remove('reg__input_has_error');
+  if (errorMsg) {
+    if (errorMsg.classList.contains('reg__error_is_visible') && input.classList.contains('reg__input_has_error')) {
+      errorMsg.classList.remove('reg__error_is_visible');
+      input.classList.remove('reg__input_has_error');
+    }
   }
+  
   
   input.placeholder = "";
   input.value = result;
