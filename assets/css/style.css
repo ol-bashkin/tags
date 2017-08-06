@@ -70,7 +70,7 @@ html, body {
     visibility: visible;
     opacity: 1;
     transition: visibility 0s linear 0s, opacity 0.5s ease-in-out;
-    -webkit-tap-highlight-color: transparent; }
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
     .c-menu__overlay:hover {
       cursor: pointer; }
     .c-menu__overlay_hidden {
@@ -128,7 +128,7 @@ html, body {
     .menu__item:active {
       background-color: #eef1f3; }
     .menu__item_is_passive {
-      -webkit-tap-highlight-color: transparent; }
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
       .menu__item_is_passive:active {
         background-color: transparent; }
       .menu__item_is_passive .menu__link {
@@ -277,7 +277,6 @@ html, body {
     transition: box-shadow, border-color, background-color 0.5s ease-in-out; }
     .reg__input:focus {
       box-shadow: 0 3px 8px rgba(76, 144, 221, 0.2);
-      border-color: #459bfe;
       background-color: #ffffff;
       outline: none; }
     .reg__inputLabel {
@@ -367,6 +366,11 @@ html, body {
     .reg__submit:hover, .reg__submit :focus {
       background-color: #0167dc;
       outline: none; }
+    .reg__submit_is_passive {
+      background-color: #eef1f3; }
+      .reg__submit_is_passive:hover, .reg__submit_is_passive :focus {
+        background-color: #eef1f3;
+        outline: none; }
 
 /* Search form */
 .c-search {
